@@ -18,6 +18,14 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
-  "rules": { "prettier/prettier": 2, "prefer-const": 2 },
-  "ignorePatterns": ["node_modules", "public"]
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "prefer-const": 2
+  },
+  "ignorePatterns": ["node_modules", "dist"]
 }

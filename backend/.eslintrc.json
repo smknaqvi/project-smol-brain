@@ -11,6 +11,14 @@
   },
 
   "plugins": ["@typescript-eslint", "prettier"],
-  "rules": { "prettier/prettier": 2, "prefer-const": 2 },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "prefer-const": 2
+  },
   "ignorePatterns": ["node_modules", "dist"]
 }
