@@ -25,7 +25,7 @@ YouTube party is an application that allows users to synchronously watch a YouTu
 The backend infrastructure will be built with NodeJS and ExpressJS. We'll also be using TypeScript on the backend as well. For our database, we'll be using MongoDB and interacting with our database using the mongoose library.
 
    **Devops**
- To deploy our application, we'll use Docker and Docker compose. This will allow us to deploy our application on any environment that supports docker. We will also nginx as a reverse proxy. If a domain isn't provided by the instructors, we can deploy on Daniel's domain (dnelw)
+ To deploy our application, we'll use Docker and Docker compose. This will allow us to deploy our application on any environment that supports docker. We will also use nginx as a reverse proxy. If a domain isn't provided by the instructors, we can deploy on Daniel's domain (dnelw)
 
   **Websockets**
 Because our application relies heavily on synchronizing users, we'll also need to take advantage of websockets for much of the functionality. We may consider using some NodeJS wrappers around Websockets if we find them to be of use.
