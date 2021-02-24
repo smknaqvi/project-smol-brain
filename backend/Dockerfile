@@ -1,5 +1,9 @@
 FROM ubuntu:20.04
 
+RUN sudo apt update
+
+RUN sudo apt install curl -y
+
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 
 RUN source ~/.bashrc
