@@ -43,7 +43,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/protected', isLoggedIn, (req: Request, res: Response) => {
-  res.json(`You're a logged in as ${(req as any).username}!`);
+  res.json(`You're logged in as ${(req as any).username}!`);
 });
 
 app.listen(port, () => {
