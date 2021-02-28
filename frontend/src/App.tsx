@@ -3,14 +3,11 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import LoginPage from "./LoginPage/LoginPage";
 import SignupPage from "./SignupPage/SignupPage";
-
+import LogoutPage from "./LogoutPage/LogoutPage";
 function App() {
   return (
     <Router>
       <div>
-        {
-          //temporary "navbar"
-        }
         <nav>
           <ul>
             <li>
@@ -22,6 +19,9 @@ function App() {
             <li>
               <Link to="/signup">Signup</Link>
             </li>
+            <li>
+              <Link to="/logout">Logout</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
@@ -30,6 +30,9 @@ function App() {
           </Route>
           <Route path="/signup" exact>
             <SignupPage />
+          </Route>
+          <Route path="/logout" exact>
+            <LogoutPage />
           </Route>
           <Route path="/" exact>
             HOMEPAGE
