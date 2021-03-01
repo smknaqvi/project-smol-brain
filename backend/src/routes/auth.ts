@@ -9,6 +9,9 @@ const User = require('../models/user.model');
 router.post('/signup', (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Missing username or password' });
+  }
   User.findOne({ username }, (err: mongoose.Error, user: typeof User) => {
     if (err) {
       console.error(err);
@@ -47,8 +50,14 @@ router.post('/signup', (req: Request, res: Response) => {
 });
 
 router.post('/login', (req: Request, res: Response) => {
+  if ((req as any).username) {
+    return res.status(200).json({ message: 'User already logged in' });
+  }
   const username = req.body.username;
   const password = req.body.password;
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Missing username or password' });
+  }
   User.findOne({ username }, (err: mongoose.Error, user: typeof User) => {
     if (err) {
       console.error(err);
