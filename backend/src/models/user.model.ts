@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import { model, Schema, Document } from 'mongoose';
 
 const userSchema = new Schema(
   {
@@ -28,6 +27,10 @@ const userSchema = new Schema(
   }
 );
 
-const User = mongoose.model('User', userSchema);
+export interface UserDocument extends Document {
+  username: string;
+  hashedPassword: string;
+  friends: Array<string>;
+}
 
-module.exports = User;
+export default model<UserDocument>('User', userSchema);
