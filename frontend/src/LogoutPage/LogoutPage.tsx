@@ -1,27 +1,13 @@
-import { useEffect, useState } from 'react';
-import { BACKEND_API_URI } from '../constants';
-import { Redirect } from 'react-router';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useAppState } from '../state';
 
 function LogoutPage() {
-  const [loggedOut, setLoggedOut] = useState(false);
-
+  const { signOut } = useAppState();
   useEffect(() => {
-    let mounted = true;
-    axios
-      .post(BACKEND_API_URI + '/auth/logout', {}, { withCredentials: true })
-      .then((res) => {
-        if (mounted) setLoggedOut(true);
-      })
-      .catch(() => {});
-    return () => {
-      mounted = false;
-    };
-  }, [loggedOut]);
+    signOut();
+  }, [signOut]);
 
-  // Uncontrolled form, all values passed to us during handleSubmit event
-  // https://reactjs.org/docs/uncontrolled-components.html
-  return loggedOut ? <Redirect to="/" /> : null;
+  return null;
 }
 
 export default LogoutPage;
