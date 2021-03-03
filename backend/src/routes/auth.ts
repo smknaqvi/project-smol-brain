@@ -1,10 +1,10 @@
-import express, { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import mongoose from 'mongoose';
 import { hashPassword, verifyPassword } from '../lib/crypto';
 import { ACCESS_DENIED_MESSAGE, INTERNAL_ERROR_MESSAGE } from '../constants';
+import User, { UserDocument } from '../models/user.model';
 
-const router = express.Router();
-const User = require('../models/user.model');
+const router = Router();
 
 router.post('/signup', (req: Request, res: Response) => {
   const username = req.body.username;
@@ -31,7 +31,7 @@ router.post('/signup', (req: Request, res: Response) => {
         });
         newUser
           .save()
-          .then((user: typeof User) => {
+          .then(() => {
             (req as any).session.username = username;
             return res
               .status(200)
@@ -58,7 +58,7 @@ router.post('/login', (req: Request, res: Response) => {
   if (!username || !password) {
     return res.status(400).json({ error: 'Missing username or password' });
   }
-  User.findOne({ username }, (err: mongoose.Error, user: typeof User) => {
+  User.findOne({ username }, (err: mongoose.Error, user: UserDocument) => {
     if (err) {
       console.error(err);
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);

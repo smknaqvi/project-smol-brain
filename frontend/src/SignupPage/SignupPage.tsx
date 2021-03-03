@@ -1,10 +1,11 @@
-import { Button, TextField } from "@material-ui/core";
-import { useState } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
-import { BACKEND_API_URI } from "../constants";
-import { Redirect } from "react-router";
-import axios from "axios";
+import createPage from '../createPage';
+import { Button, TextField, Box } from '@material-ui/core';
+import { useState } from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { BACKEND_API_URI } from '../constants';
+import { Redirect } from 'react-router';
+import axios from 'axios';
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -13,37 +14,37 @@ function Alert(props: AlertProps) {
 function SignupPage() {
   const [loginStatus, setLoginStatus] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarError, setSnackbarError] = useState("");
+  const [snackbarError, setSnackbarError] = useState('');
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(
     false
   );
-  const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [
     confirmPasswordErrorMessage,
     setConfirmPasswordErrorMessage,
-  ] = useState("");
+  ] = useState('');
 
   function validateForm(username: string, password: string, cpassword: string) {
     let errors = false;
     if (!username) {
-      setUsernameErrorMessage("Username cannot be empty");
+      setUsernameErrorMessage('Username cannot be empty');
       setShowUsernameError(true);
       errors = true;
     }
     if (!password) {
-      setPasswordErrorMessage("Password cannot be empty");
+      setPasswordErrorMessage('Password cannot be empty');
       setShowPasswordError(true);
       errors = true;
     }
     if (!cpassword) {
-      setConfirmPasswordErrorMessage("Password confirmation cannot be empty");
+      setConfirmPasswordErrorMessage('Password confirmation cannot be empty');
       setShowConfirmPasswordError(true);
       errors = true;
     } else if (cpassword !== password) {
-      setConfirmPasswordErrorMessage("Passwords do not match!");
+      setConfirmPasswordErrorMessage('Passwords do not match!');
       setShowConfirmPasswordError(true);
       errors = true;
     }
@@ -65,7 +66,7 @@ function SignupPage() {
     if (!errors) {
       axios
         .post(
-          BACKEND_API_URI + "/auth/signup",
+          BACKEND_API_URI + '/auth/signup',
           { username, password },
           { withCredentials: true }
         )
@@ -74,10 +75,10 @@ function SignupPage() {
         })
         .catch((err) => {
           if (err.response.status === 409) {
-            setSnackbarError("User with that username already exists!");
+            setSnackbarError('User with that username already exists!');
           } else {
             setSnackbarError(
-              "Error: Signup unsuccessful. Something went wrong on our end!"
+              'Error: Signup unsuccessful. Something went wrong on our end!'
             );
           }
           setLoginStatus(false);
@@ -88,23 +89,28 @@ function SignupPage() {
 
   function clearUsernameErrors() {
     setShowUsernameError(false);
-    setUsernameErrorMessage("");
+    setUsernameErrorMessage('');
   }
 
   function clearPasswordErrors() {
     setShowPasswordError(false);
-    setPasswordErrorMessage("");
+    setPasswordErrorMessage('');
   }
 
   function clearConfirmPasswordErrors() {
     setShowConfirmPasswordError(false);
-    setConfirmPasswordErrorMessage("");
+    setConfirmPasswordErrorMessage('');
   }
 
   return (
     // Uncontrolled form, all values passed to us during handleSubmit event
     // https://reactjs.org/docs/uncontrolled-components.html
-    <div id="SignupPage">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+    >
       {loginStatus ? <Redirect to="/" /> : null}
       <Snackbar
         open={showSnackbar}
@@ -116,35 +122,35 @@ function SignupPage() {
         </Alert>
       </Snackbar>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <TextField
-          error={showUsernameError}
-          helperText={usernameErrorMessage}
-          onChange={clearUsernameErrors}
-          id="username"
-          label="Username"
-        />
-        <TextField
-          error={showPasswordError}
-          helperText={passwordErrorMessage}
-          onChange={clearPasswordErrors}
-          id="password"
-          type="password"
-          label="Password"
-        />
-        <TextField
-          error={showConfirmPasswordError}
-          helperText={confirmPasswordErrorMessage}
-          onChange={clearConfirmPasswordErrors}
-          id="cpassword"
-          type="password"
-          label="Confirm Password"
-        />
-        <Button color="primary" type="submit">
-          Login
-        </Button>
+        <Box display="flex" flexDirection="column">
+          <TextField
+            error={showUsernameError}
+            helperText={usernameErrorMessage}
+            onChange={clearUsernameErrors}
+            id="username"
+            label="Username"
+          />
+          <TextField
+            error={showPasswordError}
+            helperText={passwordErrorMessage}
+            onChange={clearPasswordErrors}
+            id="password"
+            type="password"
+            label="Password"
+          />
+          <TextField
+            error={showConfirmPasswordError}
+            helperText={confirmPasswordErrorMessage}
+            onChange={clearConfirmPasswordErrors}
+            id="cpassword"
+            type="password"
+            label="Confirm Password"
+          />
+          <Button type="submit">Sign Up</Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 }
 
-export default SignupPage;
+export default createPage(SignupPage);
