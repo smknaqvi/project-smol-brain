@@ -2,7 +2,7 @@
 
 W.I.P.
 
-## Deployment to Prod
+## Deployment
 
 1. Make sure your current working directory is in the `backend/` folder
 
