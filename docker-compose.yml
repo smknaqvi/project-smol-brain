@@ -4,12 +4,10 @@ services:
     build: ./frontend
     ports:
       - 3000:3000
-    env_file:
-      - ./frontend/.env
   backend:
     container_name: ytparty-backend
     build: ./backend
     ports:
       - 5000:5000
-    volumes:
-      - ./backend/.env:/app/.env
+    env_file:
+      - ./backend/.env
