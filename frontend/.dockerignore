@@ -3,5 +3,5 @@ npm-debug.log
 dist/
 .eslintrc.json
 .prettierrc
-.env
 build/
+.git/
