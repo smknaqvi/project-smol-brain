@@ -5,12 +5,18 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from './styles/theme';
+import AppStateProvider from './state';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <Router>
+        <AppStateProvider>
+          <App />
+        </AppStateProvider>
+      </Router>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

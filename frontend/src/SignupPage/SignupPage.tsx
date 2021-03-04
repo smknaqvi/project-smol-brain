@@ -1,20 +1,9 @@
 import createPage from '../createPage';
 import { Button, TextField, Box } from '@material-ui/core';
 import { useState } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { BACKEND_API_URI } from '../constants';
-import { Redirect } from 'react-router';
-import axios from 'axios';
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import { useAppState } from '../state';
 
 function SignupPage() {
-  const [loginStatus, setLoginStatus] = useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarError, setSnackbarError] = useState('');
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(
@@ -26,6 +15,8 @@ function SignupPage() {
     confirmPasswordErrorMessage,
     setConfirmPasswordErrorMessage,
   ] = useState('');
+
+  const { signUp, setError } = useAppState();
 
   function validateForm(username: string, password: string, cpassword: string) {
     let errors = false;
@@ -64,26 +55,17 @@ function SignupPage() {
     const errors = validateForm(username, password, cpassword);
 
     if (!errors) {
-      axios
-        .post(
-          BACKEND_API_URI + '/auth/signup',
-          { username, password },
-          { withCredentials: true }
-        )
-        .then((res) => {
-          setLoginStatus(true);
-        })
-        .catch((err) => {
-          if (err.response.status === 409) {
-            setSnackbarError('User with that username already exists!');
-          } else {
-            setSnackbarError(
+      signUp(username, password).catch((err) => {
+        if (err.response.status === 409) {
+          setError(new Error('User with that username already exists!'));
+        } else {
+          setError(
+            new Error(
               'Error: Signup unsuccessful. Something went wrong on our end!'
-            );
-          }
-          setLoginStatus(false);
-          setShowSnackbar(true);
-        });
+            )
+          );
+        }
+      });
     }
   }
 
@@ -111,16 +93,6 @@ function SignupPage() {
       alignItems="center"
       height="100%"
     >
-      {loginStatus ? <Redirect to="/" /> : null}
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setShowSnackbar(false)}
-      >
-        <Alert onClose={() => setShowSnackbar(false)} severity="error">
-          {snackbarError}
-        </Alert>
-      </Snackbar>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Box display="flex" flexDirection="column">
           <TextField
