@@ -36,9 +36,15 @@ export const Navbar: React.FunctionComponent = () => {
               Logout
             </Button>
           ) : (
-            <Button color="inherit" component={RouterLink} to="/">
-              Login / Signup
-            </Button>
+            <>
+              <Button color="inherit" component={RouterLink} to="/login">
+                Login
+              </Button>
+
+              <Button color="inherit" component={RouterLink} to="/signup">
+                Sign Up
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>
