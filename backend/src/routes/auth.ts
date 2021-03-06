@@ -7,7 +7,6 @@ import User, { UserDocument } from '../models/user.model';
 const router = Router();
 
 router.post('/signup', (req: Request, res: Response) => {
-  console.log('WE HIT BACKEND  ');
   const username = req.body.username;
   const password = req.body.password;
   if (!username || !password) {
