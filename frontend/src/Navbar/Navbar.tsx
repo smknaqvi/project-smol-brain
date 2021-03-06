@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
       textAlign: 'left',
+      //https://stackoverflow.com/a/56158634
+      textDecoration: 'inherit',
+      color: 'inherit',
     },
     navbar: {
       backgroundColor: 'white',
@@ -28,7 +31,12 @@ export const Navbar: React.FunctionComponent = () => {
     <div>
       <AppBar className={classes.navbar} position="static">
         <Toolbar>
-          <Typography variant="h5" className={classes.title}>
+          <Typography
+            variant="h5"
+            component={RouterLink}
+            to="/"
+            className={classes.title}
+          >
             YouTube Party
           </Typography>
           {username ? (

@@ -13,28 +13,6 @@ function App() {
     <Box display="flex" flexDirection="column">
       <nav>
         <Navbar></Navbar>
-        <ul>
-          <li>
-            <Link component={RouterLink} to="/">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link component={RouterLink} to="/login">
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link component={RouterLink} to="/signup">
-              Signup
-            </Link>
-          </li>
-          <li>
-            <Link component={RouterLink} to="/logout">
-              Logout
-            </Link>
-          </li>
-        </ul>
       </nav>
       <Switch>
         <Route path="/login" exact>
