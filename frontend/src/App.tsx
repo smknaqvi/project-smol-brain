@@ -6,13 +6,13 @@ import SignupPage from './SignupPage/SignupPage';
 import LogoutPage from './LogoutPage/LogoutPage';
 import Alert from './Alert/Alert';
 import { useAppState } from './state';
-
+import { Navbar } from './Navbar/Navbar';
 function App() {
   const { username, error, setError } = useAppState();
-
   return (
     <Box display="flex" flexDirection="column">
       <nav>
+        <Navbar></Navbar>
         <ul>
           <li>
             <Link component={RouterLink} to="/">
@@ -50,7 +50,6 @@ function App() {
           {username ? `${username} is logged in` : 'please log in'}
         </Route>
       </Switch>
-
       <Snackbar
         open={!!error}
         autoHideDuration={6000}
