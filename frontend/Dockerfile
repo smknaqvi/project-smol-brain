@@ -10,4 +10,4 @@ EXPOSE 3000
 
 RUN npm run build
 
-ENTRYPOINT ["npx", "serve", "--listen", "3000", "./build/"]
+ENTRYPOINT ["npx", "serve", "-s", "--listen", "3000", "./build/"]
