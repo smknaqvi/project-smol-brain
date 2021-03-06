@@ -1,6 +1,6 @@
 import React from 'react';
-import { Switch, Route, Link as RouterLink } from 'react-router-dom';
-import { Link, Box, Snackbar } from '@material-ui/core';
+import { Switch, Route } from 'react-router-dom';
+import { Box, Snackbar } from '@material-ui/core';
 import LoginPage from './LoginPage/LoginPage';
 import SignupPage from './SignupPage/SignupPage';
 import LogoutPage from './LogoutPage/LogoutPage';
