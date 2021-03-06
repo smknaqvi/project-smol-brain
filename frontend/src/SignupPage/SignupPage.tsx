@@ -56,7 +56,7 @@ function SignupPage() {
 
     if (!errors) {
       signUp(username, password).catch((err) => {
-        if (err.response.status === 409) {
+        if (err?.response?.status === 409) {
           setError(new Error('User with that username already exists!'));
         } else {
           setError(
