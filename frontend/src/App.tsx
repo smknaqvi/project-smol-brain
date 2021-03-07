@@ -7,6 +7,8 @@ import LogoutPage from './LogoutPage/LogoutPage';
 import Alert from './Alert/Alert';
 import { useAppState } from './state';
 import { Navbar } from './Navbar/Navbar';
+import { PrivateRoute } from './PrivateRoute/PrivateRoute';
+
 function App() {
   const { username, error, setError } = useAppState();
   return (
@@ -24,9 +26,9 @@ function App() {
         <Route path="/logout" exact>
           <LogoutPage />
         </Route>
-        <Route path="/" exact>
-          {username ? `${username} is logged in` : 'please log in'}
-        </Route>
+        <PrivateRoute path="/" exact>
+          {`${username} is logged in`}
+        </PrivateRoute>
       </Switch>
       <Snackbar
         open={!!error}

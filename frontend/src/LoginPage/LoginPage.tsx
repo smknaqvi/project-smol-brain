@@ -38,7 +38,7 @@ function LoginPage() {
     const errors = validateForm(username, password);
     if (!errors) {
       signIn(username, password).catch((err) => {
-        if (err.response.status === 401) {
+        if (err?.response?.status === 401) {
           setError(new Error('Incorrect username or password!'));
         } else {
           setError(
