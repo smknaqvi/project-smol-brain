@@ -12,7 +12,6 @@ import { Link as RouterLink } from 'react-router-dom';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
-      flexGrow: 1,
       textAlign: 'left',
       //https://stackoverflow.com/a/56158634
       textDecoration: 'inherit',
@@ -20,6 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     navbar: {
       backgroundColor: 'white',
+    },
+    topbar: {
+      display: 'flex',
+      justifyContent: 'space-between',
     },
   })
 );
@@ -30,30 +33,34 @@ export const Navbar: React.FunctionComponent = () => {
   return (
     <div>
       <AppBar className={classes.navbar} position="static">
-        <Toolbar>
-          <Typography
-            variant="h5"
-            component={RouterLink}
-            to="/"
-            className={classes.title}
-          >
-            YouTube Party
-          </Typography>
-          {username ? (
-            <Button color="inherit" component={RouterLink} to="/logout">
-              Logout
-            </Button>
-          ) : (
-            <>
-              <Button color="inherit" component={RouterLink} to="/login">
-                Login
+        <Toolbar className={classes.topbar}>
+          <div>
+            <Typography
+              variant="h5"
+              component={RouterLink}
+              to="/"
+              className={classes.title}
+            >
+              YouTube Party
+            </Typography>
+          </div>
+          <div>
+            {username ? (
+              <Button color="inherit" component={RouterLink} to="/logout">
+                Logout
               </Button>
+            ) : (
+              <>
+                <Button color="inherit" component={RouterLink} to="/login">
+                  Login
+                </Button>
 
-              <Button color="inherit" component={RouterLink} to="/signup">
-                Sign Up
-              </Button>
-            </>
-          )}
+                <Button color="inherit" component={RouterLink} to="/signup">
+                  Sign Up
+                </Button>
+              </>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
     </div>
