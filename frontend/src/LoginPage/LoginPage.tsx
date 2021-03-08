@@ -1,13 +1,15 @@
 import createPage from '../createPage';
-import { Button, TextField, Box } from '@material-ui/core';
+import { TextField, Box } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
+import LoadingButton from '../LoadingComponents/LoadingButton';
 
 function LoginPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn, setError } = useAppState();
 
   const validateForm = (username: string, password: string) => {
@@ -37,7 +39,9 @@ function LoginPage() {
     const password = target.password.value;
     const errors = validateForm(username, password);
     if (!errors) {
+      setIsLoading(true);
       signIn(username, password).catch((err) => {
+        setIsLoading(false);
         if (err?.response?.status === 401) {
           setError(new Error('Incorrect username or password!'));
         } else {
@@ -71,6 +75,7 @@ function LoginPage() {
       alignItems="center"
       height="100%"
     >
+      <h1>Login</h1>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Box display="flex" flexDirection="column">
           <TextField
@@ -88,7 +93,9 @@ function LoginPage() {
             type="password"
             label="Password"
           />
-          <Button type="submit">Login</Button>
+          <LoadingButton type="submit" loading={isLoading}>
+            Login
+          </LoadingButton>
         </Box>
       </form>
     </Box>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Box, Snackbar } from '@material-ui/core';
 import LoginPage from './LoginPage/LoginPage';
@@ -11,6 +10,7 @@ import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 
 function App() {
   const { username, error, setError } = useAppState();
+
   return (
     <Box display="flex" flexDirection="column">
       <nav>

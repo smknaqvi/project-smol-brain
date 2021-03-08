@@ -7,6 +7,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
@@ -31,6 +32,7 @@ app.use(
   })
 );
 app.use(sessionParser);
+app.use(cookieParser());
 
 mongoose.connect(dbURI as string, {
   useNewUrlParser: true,
@@ -50,7 +52,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/protected', isLoggedIn, (req: Request, res: Response) => {
-  res.json(`You're logged in as ${(req as any).username}!`);
+  res.json(`You're logged in as ${req.username}!`);
 });
 
 app.listen(port, () => {

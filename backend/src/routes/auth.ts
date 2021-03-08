@@ -32,7 +32,10 @@ router.post('/signup', (req: Request, res: Response) => {
         newUser
           .save()
           .then(() => {
-            (req as any).session.username = username;
+            req.session.username = username;
+            res.cookie('username', username, {
+              maxAge: 60 * 60 * 24 * 7,
+            });
             return res
               .status(200)
               .json({ message: `User ${username} signed up successfully` });
@@ -42,7 +45,7 @@ router.post('/signup', (req: Request, res: Response) => {
             return res.status(500).json(INTERNAL_ERROR_MESSAGE);
           });
       })
-      .catch((reason: any) => {
+      .catch((reason: Error) => {
         console.error(reason);
         return res.status(500).json(INTERNAL_ERROR_MESSAGE);
       });
@@ -50,7 +53,7 @@ router.post('/signup', (req: Request, res: Response) => {
 });
 
 router.post('/login', (req: Request, res: Response) => {
-  if ((req as any).username) {
+  if (req.username) {
     return res.status(200).json({ message: 'User already logged in' });
   }
   const username = req.body.username;
@@ -68,12 +71,15 @@ router.post('/login', (req: Request, res: Response) => {
     verifyPassword(password, user.hashedPassword)
       .then((isCorrect: boolean) => {
         if (!isCorrect) return res.status(401).json(ACCESS_DENIED_MESSAGE);
-        (req as any).session.username = username;
+        req.session.username = username;
+        res.cookie('username', username, {
+          maxAge: 60 * 60 * 24 * 7,
+        });
         res
           .status(200)
           .json({ message: `User ${username} logged in successfully` });
       })
-      .catch((reason: any) => {
+      .catch((reason: Error) => {
         console.error(reason);
         res.status(500).json(INTERNAL_ERROR_MESSAGE);
       });
@@ -81,12 +87,13 @@ router.post('/login', (req: Request, res: Response) => {
 });
 
 router.post('/logout', (req: Request, res: Response) => {
-  (req as any).session.destroy((err: Error) => {
+  req.session.destroy((err: Error) => {
     if (err) {
       console.error(err);
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);
     }
     res.clearCookie('connect.sid');
+    res.clearCookie('username');
     return res.status(200).json({ message: 'Logged out successfully' });
   });
 });
