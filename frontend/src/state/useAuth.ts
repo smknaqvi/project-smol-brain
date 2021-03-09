@@ -8,14 +8,14 @@ export default function useAuth() {
 
   useEffect(() => {
     const username = document.cookie.replace(
-      /(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     );
     if (username) {
       setUsername(username);
       history.replace('/');
     }
-  }, [history]);
+  }, [history, username]);
 
   const signIn = useCallback(
     (username: string, password: string) => {
