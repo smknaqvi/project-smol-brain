@@ -9,6 +9,13 @@ const API = axios.create({
 API.interceptors.response.use(
   (res) => res,
   (err) => {
+    if (
+      err?.response?.status === 401 &&
+      !window.location.href.match(/\/login| \/signup/)
+    ) {
+      API.post('/auth/logout');
+      window.location.href = '/login';
+    }
     throw err;
   }
 );

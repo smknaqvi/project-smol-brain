@@ -1,7 +1,8 @@
 import createPage from '../createPage';
-import { Button, TextField, Box } from '@material-ui/core';
+import { TextField, Box } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
+import LoadingButton from '../LoadingComponents/LoadingButton';
 
 function SignupPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
@@ -15,7 +16,7 @@ function SignupPage() {
     confirmPasswordErrorMessage,
     setConfirmPasswordErrorMessage,
   ] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
   const { signUp, setError } = useAppState();
 
   function validateForm(username: string, password: string, cpassword: string) {
@@ -55,7 +56,9 @@ function SignupPage() {
     const errors = validateForm(username, password, cpassword);
 
     if (!errors) {
+      setIsLoading(true);
       signUp(username, password).catch((err) => {
+        setIsLoading(false);
         if (err?.response?.status === 409) {
           setError(new Error('User with that username already exists!'));
         } else {
@@ -89,10 +92,12 @@ function SignupPage() {
     // https://reactjs.org/docs/uncontrolled-components.html
     <Box
       display="flex"
+      flexDirection="column"
       justifyContent="center"
       alignItems="center"
       height="100%"
     >
+      <h1>Sign Up</h1>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Box display="flex" flexDirection="column">
           <TextField
@@ -118,7 +123,9 @@ function SignupPage() {
             type="password"
             label="Confirm Password"
           />
-          <Button type="submit">Sign Up</Button>
+          <LoadingButton type="submit" loading={isLoading}>
+            Sign Up
+          </LoadingButton>
         </Box>
       </form>
     </Box>
