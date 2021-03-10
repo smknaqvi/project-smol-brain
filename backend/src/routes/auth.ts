@@ -94,8 +94,8 @@ router.post('/logout', (req: Request, res: Response) => {
       console.error(err);
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);
     }
-    res.clearCookie('connect.sid');
-    res.clearCookie('username');
+    res.clearCookie('connect.sid', { domain: process.env.ROOT_DOMAIN });
+    res.clearCookie('username', { domain: process.env.ROOT_DOMAIN });
     return res.status(200).json({ message: 'Logged out successfully' });
   });
 });
