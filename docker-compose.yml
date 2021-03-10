@@ -4,6 +4,7 @@ services:
     build: ./frontend
     ports:
       - 3000:3000
+    restart: unless-stopped
   backend:
     container_name: ytparty-backend
     build: ./backend
@@ -11,3 +12,4 @@ services:
       - 5000:5000
     env_file:
       - ./backend/.env
+    restart: unless-stopped
