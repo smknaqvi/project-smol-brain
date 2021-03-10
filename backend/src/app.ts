@@ -29,6 +29,7 @@ app.use(
     secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: true,
+    cookie: { domain: process.env.ROOT_DOMAIN },
   })
 );
 app.use(sessionParser);
