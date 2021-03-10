@@ -74,6 +74,7 @@ router.post('/login', (req: Request, res: Response) => {
         req.session.username = username;
         res.cookie('username', username, {
           maxAge: 60 * 60 * 24 * 7,
+          domain: process.env.ROOT_DOMAIN,
         });
         res
           .status(200)
