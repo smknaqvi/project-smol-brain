@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import useAuth from './useAuth';
 
 interface StateContextType {
+  isAuthReady: boolean;
   error: Error | null;
   setError(error: Error | null): void;
   username: string;

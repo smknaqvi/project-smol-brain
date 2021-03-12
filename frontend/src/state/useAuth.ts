@@ -1,21 +1,37 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import API from '../utils/API';
 
 export default function useAuth() {
   const history = useHistory();
   const [username, setUsername] = useState<string | null>(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+  const initialRender = useRef(true);
 
   useEffect(() => {
     const username = document.cookie.replace(
       /(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     );
+    console.log('TEST');
     if (username) {
       setUsername(username);
-      history.replace('/');
+
+      if (['/signup', '/login'].includes(history.location.pathname)) {
+        history.replace('/');
+      }
+    } else {
+      setIsAuthReady(true);
     }
-  }, [history, username]);
+  }, [history]);
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
+      setIsAuthReady(true);
+    }
+  }, [username]);
 
   const signIn = useCallback(
     (username: string, password: string) => {
@@ -44,5 +60,5 @@ export default function useAuth() {
     });
   }, [history]);
 
-  return { username, signIn, signOut, signUp };
+  return { isAuthReady, username, signIn, signOut, signUp };
 }

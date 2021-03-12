@@ -7,9 +7,11 @@ import Alert from './Alert/Alert';
 import { useAppState } from './state';
 import { Navbar } from './Navbar/Navbar';
 import { PrivateRoute } from './PrivateRoute/PrivateRoute';
+import LandingPage from './LandingPage/LandingPage';
+import PartyPage from './PartyPage/PartyPage';
 
 function App() {
-  const { username, error, setError } = useAppState();
+  const { error, setError } = useAppState();
 
   return (
     <Box display="flex" flexDirection="column">
@@ -26,8 +28,12 @@ function App() {
         <Route path="/logout" exact>
           <LogoutPage />
         </Route>
+        <Route path="/party/:id">
+          <PartyPage></PartyPage>
+        </Route>
+
         <PrivateRoute path="/" exact>
-          {`${username} is logged in`}
+          <LandingPage></LandingPage>
         </PrivateRoute>
       </Switch>
       <Snackbar
