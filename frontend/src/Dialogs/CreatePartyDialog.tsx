@@ -10,12 +10,7 @@ import Button from '@material-ui/core/Button';
 import { v4 as uuidv4 } from 'uuid';
 import { makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-// import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
-//https://material-ui.com/components/snackbars/#snackbar
-// function Alert(props: AlertProps) {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
 const ClipboardToolTip = withStyles((theme: Theme) => ({
   tooltip: {
     boxShadow: theme.shadows[1],

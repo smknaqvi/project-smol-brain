@@ -44,7 +44,6 @@ function JoinPartyDialog({
           }}
           //https://stackoverflow.com/a/49427475
           onChange={(e) => setPartyID(e.target.value)}
-          error={partyID === ''}
           required
           autoFocus
           margin="dense"
