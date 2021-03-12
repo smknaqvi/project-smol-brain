@@ -13,7 +13,6 @@ export default function useAuth() {
       /(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     );
-    console.log('TEST');
     if (username) {
       setUsername(username);
 

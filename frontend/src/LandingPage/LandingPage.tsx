@@ -63,12 +63,12 @@ function LandingPage() {
       <JoinPartyDialog
         isOpen={joinDialogOpen}
         closeFunction={handleJoinDialogClose}
-        joinParty={goToParty}
+        goToParty={goToParty}
       ></JoinPartyDialog>
       <CreatePartyDialog
         isOpen={createDialogOpen}
         closeFunction={handleCreateDialogClose}
-        createParty={goToParty}
+        goToParty={goToParty}
       ></CreatePartyDialog>
 
       <Button

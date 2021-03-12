@@ -8,14 +8,23 @@ import { useState } from 'react';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
+interface DialogPropsInterface {
+  closeFunction: () => void;
+  goToParty: (partyID: string) => void;
+  isOpen: boolean;
+}
 
-function JoinPartyDialog(props: any) {
+function JoinPartyDialog({
+  closeFunction,
+  goToParty,
+  isOpen,
+}: DialogPropsInterface) {
   const [partyID, setPartyID] = useState(' ');
 
   return (
     <Dialog
-      open={props.isOpen}
-      onClose={props.closeFunction}
+      open={isOpen}
+      onClose={closeFunction}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">Join a party</DialogTitle>
@@ -46,14 +55,14 @@ function JoinPartyDialog(props: any) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.closeFunction} color="primary">
+        <Button onClick={closeFunction} color="primary">
           Cancel
         </Button>
         <Button
           // https://stackoverflow.com/q/40881616
           type="submit" //set the buttom type is submit
           onClick={() => {
-            props.joinParty(partyID);
+            goToParty(partyID);
           }}
           color="primary"
           disabled={partyID.trim().length === 0}

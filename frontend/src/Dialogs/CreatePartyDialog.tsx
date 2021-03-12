@@ -5,17 +5,17 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useEffect, useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
-
+import Alert from '../Alert/Alert';
 import Button from '@material-ui/core/Button';
 import { v4 as uuidv4 } from 'uuid';
 import { makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+// import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 //https://material-ui.com/components/snackbars/#snackbar
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+// function Alert(props: AlertProps) {
+//   return <MuiAlert elevation={6} variant="filled" {...props} />;
+// }
 const ClipboardToolTip = withStyles((theme: Theme) => ({
   tooltip: {
     boxShadow: theme.shadows[1],
@@ -37,11 +37,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+interface DialogPropsInterface {
+  closeFunction: () => void;
+  goToParty: (partyID: string) => void;
+  isOpen: boolean;
+}
 
-function CreatePartyDialog(props: any) {
+function CreatePartyDialog({
+  closeFunction,
+  goToParty,
+  isOpen,
+}: DialogPropsInterface) {
   const classes = useStyles();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
   const [partyID, setPartyID] = useState(' ');
 
   useEffect(() => {
@@ -66,7 +74,7 @@ function CreatePartyDialog(props: any) {
   };
 
   return (
-    <>
+    <div>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -77,8 +85,8 @@ function CreatePartyDialog(props: any) {
         </Alert>
       </Snackbar>
       <Dialog
-        open={props.isOpen}
-        onClose={props.closeFunction}
+        open={isOpen}
+        onClose={closeFunction}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Create a party</DialogTitle>
@@ -96,14 +104,14 @@ function CreatePartyDialog(props: any) {
           </ClipboardToolTip>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.closeFunction} color="primary">
+          <Button onClick={closeFunction} color="primary">
             Cancel
           </Button>
           <Button
             // https://stackoverflow.com/q/40881616
             type="submit" //set the buttom type is submit
             onClick={() => {
-              props.createParty(partyID);
+              goToParty(partyID);
             }}
             color="primary"
             disabled={partyID === ''}
@@ -112,7 +120,7 @@ function CreatePartyDialog(props: any) {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
 
