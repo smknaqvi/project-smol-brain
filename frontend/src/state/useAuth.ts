@@ -55,7 +55,7 @@ export default function useAuth() {
   const signOut = useCallback(() => {
     return API.post('/auth/logout').then((res) => {
       setUsername(null);
-      history.replace('/login');
+      history.replace('/');
     });
   }, [history]);
 

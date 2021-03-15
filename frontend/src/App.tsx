@@ -32,9 +32,9 @@ function App() {
           <PartyPage></PartyPage>
         </Route>
 
-        <PrivateRoute path="/" exact>
+        <Route path="/" exact>
           <LandingPage></LandingPage>
-        </PrivateRoute>
+        </Route>
       </Switch>
       <Snackbar
         open={!!error}

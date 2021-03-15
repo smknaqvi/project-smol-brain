@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import { sessionParser } from './middleware/session';
-import { isLoggedIn } from './middleware/auth';
 import authRouter from './routes/auth';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -50,10 +49,6 @@ app.use('/auth', authRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Hello World!' });
-});
-
-app.get('/protected', isLoggedIn, (req: Request, res: Response) => {
-  res.json(`You're logged in as ${req.username}!`);
 });
 
 app.listen(port, () => {
