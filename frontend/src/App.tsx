@@ -6,7 +6,6 @@ import LogoutPage from './LogoutPage/LogoutPage';
 import Alert from './Alert/Alert';
 import { useAppState } from './state';
 import { Navbar } from './Navbar/Navbar';
-import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 import LandingPage from './LandingPage/LandingPage';
 import PartyPage from './PartyPage/PartyPage';
 

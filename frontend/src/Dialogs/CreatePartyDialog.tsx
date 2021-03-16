@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 interface DialogPropsInterface {
   closeFunction: () => void;
-  goToParty: (partyID: string) => void;
+  goToParty: (partyID: string, isNewParty: boolean) => void;
   isOpen: boolean;
 }
 
@@ -56,6 +56,7 @@ function CreatePartyDialog({
     navigator.clipboard.writeText(partyID);
     setSnackbarOpen(true);
   };
+
   //https://material-ui.com/components/snackbars/#snackbar
   const handleSnackbarClose = (
     event?: React.SyntheticEvent,
@@ -106,7 +107,7 @@ function CreatePartyDialog({
             // https://stackoverflow.com/q/40881616
             type="submit" //set the buttom type is submit
             onClick={() => {
-              goToParty(partyID);
+              goToParty(partyID, true);
             }}
             color="primary"
             disabled={partyID === ''}

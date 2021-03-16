@@ -10,7 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
 interface DialogPropsInterface {
   closeFunction: () => void;
-  goToParty: (partyID: string) => void;
+  goToParty: (partyID: string, isNewParty: boolean) => void;
   isOpen: boolean;
 }
 
@@ -61,7 +61,7 @@ function JoinPartyDialog({
           // https://stackoverflow.com/q/40881616
           type="submit" //set the buttom type is submit
           onClick={() => {
-            goToParty(partyID);
+            goToParty(partyID, false);
           }}
           color="primary"
           disabled={partyID.trim().length === 0}

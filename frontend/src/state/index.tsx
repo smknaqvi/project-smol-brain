@@ -9,6 +9,8 @@ interface StateContextType {
   signIn(username: string, password: string): Promise<void>;
   signUp(username: string, password: string): Promise<void>;
   signOut(): Promise<void>;
+  
+
 }
 const StateContext = createContext<StateContextType>(null!);
 
