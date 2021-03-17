@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { io } from '../app';
 const router = Router();
 
-router.get('/validate/:id', (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response) => {
   const partyID: string = req.params.id;
   const rooms = io.sockets.adapter.rooms;
   if (rooms.get(partyID)) {

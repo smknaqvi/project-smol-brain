@@ -4,7 +4,7 @@ import React from 'react';
 function createPage(WrappedComponent: React.ComponentType) {
   return (props: any) => {
     return (
-      <Box height="100%">
+      <Box height="100%" padding="10px" margin="10px">
         <WrappedComponent {...props} />
       </Box>
     );
