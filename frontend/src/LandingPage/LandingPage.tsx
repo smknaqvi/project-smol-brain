@@ -65,7 +65,7 @@ function LandingPage() {
   };
   const goToParty = (partyID: string, isNewParty: boolean) => {
     if (!isNewParty) {
-      API.post('/party/validate', { partyID })
+      API.get(`/party/validate/${partyID}`)
         .then((res) => {
           history.push({
             pathname: `/party/${partyID}`,

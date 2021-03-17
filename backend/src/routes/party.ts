@@ -2,8 +2,8 @@ import { Request, Response, Router } from 'express';
 import { io } from '../app';
 const router = Router();
 
-router.post('/validate', (req: Request, res: Response) => {
-  const partyID: string = req.body.partyID;
+router.get('/validate/:id', (req: Request, res: Response) => {
+  const partyID: string = req.params.id;
   const rooms = io.sockets.adapter.rooms;
   if (rooms.get(partyID)) {
     return res.status(200).json({ message: 'Valid' });
