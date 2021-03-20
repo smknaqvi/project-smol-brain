@@ -1,107 +1,97 @@
-import { useCallback, useState, useEffect } from 'react';
-import socketIOClient from 'socket.io-client';
+import { useState } from 'react';
 import YoutubeIFrame from './YoutubeIFrame';
-import { once } from 'lodash';
-import { BACKEND_API_URI } from '../constants';
-import { Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
+import { Snackbar } from '@material-ui/core';
+import Alert from '../Alert/Alert';
+import InputLabel from '@material-ui/core/InputLabel';
+import FilledInput from '@material-ui/core/FilledInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Send from '@material-ui/icons/Send';
+import { makeStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import usePlayerConnection from '../hooks/usePlayerConnection';
 
-const createSocket = once((partyID) =>
-  socketIOClient(BACKEND_API_URI, {
-    query: {
-      partyID,
-    },
-  })
-);
+const useStyles = makeStyles(() => ({
+  form: {
+    margin: '1% 0',
+  },
+  helperText: {
+    margin: '0 1%',
+  },
+  videoPlayer: {},
+}));
 
 function RTCPlayerWrapper() {
   const [youtubeURL, setYoutubeURL] = useState('');
-  const partyID = window.location.pathname.split('/')[2];
-  const [submittedURL, setSubmittedURL] = useState('');
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [lastSeekTime, setLastSeekTime] = useState<[number]>([100]);
+  const classes = useStyles();
 
-  const socket = createSocket(partyID);
-
-  useEffect(() => {
-    socket.emit('connection');
-
-    socket.on('new-connection', (data: any) => {
-      console.log(data);
-    });
-
-    socket.on('play', (timestamp: number) => {
-      setLastSeekTime([timestamp]);
-      setIsPlaying(true);
-    });
-
-    socket.on('pause', () => {
-      setIsPlaying(false);
-    });
-
-    socket.on('url', (url: string) => {
-      console.log('RECEIVED URL');
-      setSubmittedURL(url);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket]);
-
-  const handleSetURL = (url: string) => {
-    console.log(`Set URL: ${url}`);
-    socket.emit('url', url);
-    setSubmittedURL(url);
-  };
-
-  const handlePlay = useCallback(
-    (timestamp) => {
-      console.log(`PLAY:${timestamp}`);
-      socket.emit('play', timestamp);
-      setIsPlaying(true);
-    },
-    [socket]
-  );
-
-  const handlePause = useCallback(
-    (timestamp) => {
-      console.log('Pause');
-      socket.emit('pause', timestamp);
-      // do not set last seek time in here
-      setIsPlaying(false);
-    },
-    [socket]
-  );
-
-  const handleProgress = useCallback((timestamp) => {
-    console.log('Progress', timestamp);
-  }, []);
+  const {
+    notice,
+    submittedURL,
+    isPlaying,
+    lastSeekTime,
+    handlePlay,
+    handlePause,
+    handleProgress,
+    handleSetURL,
+    handleSetNotice,
+  } = usePlayerConnection();
 
   return (
-    <div className="party-page">
-      <TextField
-        //https://stackoverflow.com/a/49427475
-        onChange={(e) => setYoutubeURL(e.target.value)}
-        required
-        autoFocus
-        margin="dense"
-        id="youtubeurl"
-        label="URL to Youtube Video"
-        type="string"
-        fullWidth
-      />
-      <Button onClick={(e) => handleSetURL(youtubeURL)}>Start</Button>
-      <YoutubeIFrame
-        url={submittedURL}
-        isPlaying={isPlaying}
-        lastSeekTime={lastSeekTime}
-        playbackRate={1}
-        handlePlay={handlePlay}
-        handlePause={handlePause}
-        handleProgress={handleProgress}
-      />
-    </div>
+    <Grid
+      container
+      spacing={5}
+      direction="column"
+      alignItems="center"
+      alignContent="center"
+    >
+      <FormControl className={classes.form} fullWidth>
+        <InputLabel
+          className={classes.helperText}
+          htmlFor="filled-adornment-url"
+        >
+          URL To Youtube Video
+        </InputLabel>
+        <FilledInput
+          id="filled-adornment-url"
+          type="text"
+          value={youtubeURL}
+          onChange={(e) => setYoutubeURL(e.target.value)}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="set youtube url"
+                onClick={() => handleSetURL(youtubeURL)}
+                edge="end"
+              >
+                <Send />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+      <Grid item xl={'auto'}>
+        <YoutubeIFrame
+          url={submittedURL}
+          isPlaying={isPlaying}
+          lastSeekTime={lastSeekTime}
+          playbackRate={1}
+          handlePlay={handlePlay}
+          handlePause={handlePause}
+          handleProgress={handleProgress}
+        />
+      </Grid>
+      <Snackbar
+        open={!!notice}
+        autoHideDuration={6000}
+        onClose={() => handleSetNotice('')}
+      >
+        <Alert onClose={() => handleSetNotice('')} severity="info">
+          {notice}
+        </Alert>
+      </Snackbar>
+    </Grid>
   );
 }
 

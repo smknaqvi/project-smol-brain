@@ -22,8 +22,9 @@ const corsOptions = {
 
 const app = express();
 const server = createServer(app);
+const urls = new Map();
 export const io = new Server(server, { cors: corsOptions });
-ioFunction(io);
+ioFunction(io, urls);
 
 const port = process.env.PORT;
 const dbURI = process.env.DB_URI;

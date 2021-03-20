@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import { v4 as uuidv4 } from 'uuid';
 import { makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const ClipboardToolTip = withStyles((theme: Theme) => ({
   tooltip: {
@@ -88,13 +89,17 @@ function CreatePartyDialog({
         <DialogTitle id="form-dialog-title">Create a party</DialogTitle>
         <DialogContent className={classes.dialogContent}>
           <DialogContentText>
-            The Number below is your unique party ID. Copy it to your clipboard
+            The number below is your unique party ID. Copy it to your clipboard
             and keep it somewhere safe. This is what you'll use to invite others
             to your party. (It'll also be in the URL of your room).
           </DialogContentText>
 
           <ClipboardToolTip title="Copy to clipboard" placement="bottom">
-            <Button onClick={copyToClipboard} variant="outlined">
+            <Button
+              onClick={copyToClipboard}
+              variant="outlined"
+              endIcon={<FileCopyIcon></FileCopyIcon>}
+            >
               {partyID}
             </Button>
           </ClipboardToolTip>
