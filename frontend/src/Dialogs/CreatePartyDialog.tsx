@@ -19,7 +19,7 @@ const ClipboardToolTip = withStyles((theme: Theme) => ({
   },
 }))(Tooltip);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   dialogContent: {
     textAlign: 'center',
   },
@@ -98,7 +98,7 @@ function CreatePartyDialog({
             <Button
               onClick={copyToClipboard}
               variant="outlined"
-              endIcon={<FileCopyIcon></FileCopyIcon>}
+              endIcon={<FileCopyIcon />}
             >
               {partyID}
             </Button>

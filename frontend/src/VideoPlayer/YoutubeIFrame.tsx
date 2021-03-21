@@ -1,11 +1,10 @@
-import { CircularProgress } from '@material-ui/core';
-import { useCallback, useEffect, useRef } from 'react';
-import ReactPlayer from 'react-player/lazy';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import ReactPlayer from 'react-player';
 import { debounce } from 'lodash';
+import { LinearProgress } from '@material-ui/core';
 
 const PROGRESS_INTERVAL = 1000;
 const hasControls = true;
-const isLoop = false;
 
 interface YoutubeIFrameInterface {
   url: string;
@@ -27,21 +26,30 @@ function YoutubeIFrame({
   handleProgress,
 }: YoutubeIFrameInterface) {
   const playerRef = useRef<any>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     playerRef.current?.seekTo(...lastSeekTime, 'seconds');
   }, [lastSeekTime]);
 
+  useEffect(() => {
+    setIsReady(false);
+  }, [url]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const bufferPause = useCallback(
     debounce(() => {
       handlePause(playerRef.current?.getCurrentTime());
-    }, 500),
+    }, 1000),
     [handlePause]
   );
 
+  const onReady = useCallback(() => {
+    setIsReady(true);
+  }, []);
+
   const onStart = useCallback(() => {
     playerRef.current?.seekTo(...lastSeekTime, 'seconds');
-    console.log('onStart');
   }, [lastSeekTime]);
 
   const onPlay = useCallback(() => {
@@ -73,33 +81,32 @@ function YoutubeIFrame({
     }
   }, [isPlaying, handlePause]);
 
-  const onBuffer = useCallback(() => {
-    console.log('onBuffer');
-    bufferPause();
-  }, [bufferPause]);
-
   const onBufferEnd = useCallback(() => {
     bufferPause.cancel();
   }, [bufferPause]);
 
   return (
-    <ReactPlayer
-      ref={(player) => (playerRef.current = player)}
-      url={url}
-      playing={isPlaying}
-      loop={isLoop}
-      controls={hasControls}
-      playbackRate={playbackRate}
-      progressInterval={PROGRESS_INTERVAL}
-      fallback={<CircularProgress />}
-      onStart={onStart}
-      onPlay={onPlay}
-      onProgress={onProgress}
-      onPause={onPause}
-      onBuffer={onBuffer}
-      onBufferEnd={onBufferEnd}
-      muted={true}
-    />
+    <div>
+      {!!url && !isReady && <LinearProgress />}
+      <ReactPlayer
+        ref={(player) => (playerRef.current = player)}
+        url={url}
+        playing={isPlaying}
+        controls={hasControls}
+        playbackRate={playbackRate}
+        progressInterval={PROGRESS_INTERVAL}
+        onReady={onReady}
+        onStart={onStart}
+        onPlay={onPlay}
+        onProgress={onProgress}
+        onPause={onPause}
+        onBuffer={bufferPause}
+        onBufferEnd={onBufferEnd}
+        muted={true}
+        height="360px"
+        width="640px"
+      />
+    </div>
   );
 }
 

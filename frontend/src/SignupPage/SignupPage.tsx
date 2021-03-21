@@ -1,5 +1,5 @@
 import createPage from '../createPage';
-import { TextField, Box } from '@material-ui/core';
+import { TextField, Box, Typography, Card } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
 import LoadingButton from '../LoadingComponents/LoadingButton';
@@ -97,37 +97,41 @@ function SignupPage() {
       alignItems="center"
       height="100%"
     >
-      <h1>Sign Up</h1>
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Box display="flex" flexDirection="column">
-          <TextField
-            error={showUsernameError}
-            helperText={usernameErrorMessage}
-            onChange={clearUsernameErrors}
-            id="username"
-            label="Username"
-          />
-          <TextField
-            error={showPasswordError}
-            helperText={passwordErrorMessage}
-            onChange={clearPasswordErrors}
-            id="password"
-            type="password"
-            label="Password"
-          />
-          <TextField
-            error={showConfirmPasswordError}
-            helperText={confirmPasswordErrorMessage}
-            onChange={clearConfirmPasswordErrors}
-            id="cpassword"
-            type="password"
-            label="Confirm Password"
-          />
-          <LoadingButton type="submit" loading={isLoading}>
-            Sign Up
-          </LoadingButton>
-        </Box>
-      </form>
+      <Card>
+        <Typography variant="h3" align="center">
+          Sign Up
+        </Typography>
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <Box display="flex" flexDirection="column">
+            <TextField
+              error={showUsernameError}
+              helperText={usernameErrorMessage}
+              onChange={clearUsernameErrors}
+              id="username"
+              label="Username"
+            />
+            <TextField
+              error={showPasswordError}
+              helperText={passwordErrorMessage}
+              onChange={clearPasswordErrors}
+              id="password"
+              type="password"
+              label="Password"
+            />
+            <TextField
+              error={showConfirmPasswordError}
+              helperText={confirmPasswordErrorMessage}
+              onChange={clearConfirmPasswordErrors}
+              id="cpassword"
+              type="password"
+              label="Confirm Password"
+            />
+            <LoadingButton type="submit" loading={isLoading}>
+              Sign Up
+            </LoadingButton>
+          </Box>
+        </form>
+      </Card>
     </Box>
   );
 }

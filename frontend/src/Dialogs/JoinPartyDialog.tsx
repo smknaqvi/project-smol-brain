@@ -8,6 +8,7 @@ import { useState } from 'react';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
+
 interface DialogPropsInterface {
   closeFunction: () => void;
   goToParty: (partyID: string, isNewParty: boolean) => void;

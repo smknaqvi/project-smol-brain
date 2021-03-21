@@ -13,7 +13,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        margin: '8px',
+        padding: '8px',
       },
     },
     MuiTextField: {
@@ -21,6 +21,11 @@ const theme = createMuiTheme({
         margin: '8px',
       },
     },
+    MuiCard: {
+      root: {
+        padding: '12px',
+      }
+    }
   },
   spacing: 4,
 });

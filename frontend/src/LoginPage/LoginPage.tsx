@@ -1,5 +1,5 @@
 import createPage from '../createPage';
-import { TextField, Box } from '@material-ui/core';
+import { TextField, Box, Typography, Card } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
 import LoadingButton from '../LoadingComponents/LoadingButton';
@@ -75,29 +75,33 @@ function LoginPage() {
       alignItems="center"
       height="100%"
     >
-      <h1>Login</h1>
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Box display="flex" flexDirection="column">
-          <TextField
-            error={showUsernameError}
-            helperText={usernameErrorMessage}
-            onChange={clearUsernameErrors}
-            id="username"
-            label="Username"
-          />
-          <TextField
-            error={showPasswordError}
-            helperText={passwordErrorMessage}
-            onChange={clearPasswordErrors}
-            id="password"
-            type="password"
-            label="Password"
-          />
-          <LoadingButton type="submit" loading={isLoading}>
-            Login
-          </LoadingButton>
-        </Box>
-      </form>
+      <Card>
+        <Typography variant="h3" align="center">
+          Login
+        </Typography>
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <Box display="flex" flexDirection="column">
+            <TextField
+              error={showUsernameError}
+              helperText={usernameErrorMessage}
+              onChange={clearUsernameErrors}
+              id="username"
+              label="Username"
+            />
+            <TextField
+              error={showPasswordError}
+              helperText={passwordErrorMessage}
+              onChange={clearPasswordErrors}
+              id="password"
+              type="password"
+              label="Password"
+            />
+            <LoadingButton type="submit" loading={isLoading}>
+              Login
+            </LoadingButton>
+          </Box>
+        </form>
+      </Card>
     </Box>
   );
 }

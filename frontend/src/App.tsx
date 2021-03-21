@@ -15,7 +15,7 @@ function App() {
   return (
     <Box display="flex" flexDirection="column">
       <nav>
-        <Navbar></Navbar>
+        <Navbar />
       </nav>
       <Switch>
         <Route path="/login" exact>
@@ -28,11 +28,10 @@ function App() {
           <LogoutPage />
         </Route>
         <Route path="/party/:id">
-          <PartyPage></PartyPage>
+          <PartyPage />
         </Route>
-
         <Route path="/" exact>
-          <LandingPage></LandingPage>
+          <LandingPage />
         </Route>
       </Switch>
       <Snackbar

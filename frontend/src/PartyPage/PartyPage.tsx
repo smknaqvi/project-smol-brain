@@ -1,8 +1,13 @@
+import { Box } from '@material-ui/core';
 import createPage from '../createPage';
-import RTCPlayerWrapper from '../VideoPlayer/RTCPlayerWrapper';
+import PartyPlayer from '../VideoPlayer/PartyPlayer';
 
 function PartyPage() {
-  return <RTCPlayerWrapper />;
+  return (
+    <Box>
+      <PartyPlayer />
+    </Box>
+  );
 }
 
 export default createPage(PartyPage);
