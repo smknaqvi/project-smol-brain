@@ -3,21 +3,13 @@ import background from '../media/tile-background.png';
 
 const theme = createMuiTheme({
   palette: {
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundImage: `url(${background})`,
-    // type: 'dark',
-    // primary: {
-    //   contrastText: 'rgba(0, 0, 0, 0.87)',
-    //   dark: 'rgb(0, 131, 148)',
-    //   light: 'rgb(51, 201, 220)',
-    //   main: '
-    background: {
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      backgroundImage: `url(${background})`,
+    type: 'dark',
+    primary: {
+      contrastText: 'rgba(0, 0, 0, 0.87)',
+      dark: 'rgb(0, 131, 148)',
+      light: 'rgb(51, 201, 220)',
+      main: '#00bcd4',
     },
-    // },
   },
   overrides: {
     MuiButton: {
@@ -33,6 +25,15 @@ const theme = createMuiTheme({
     MuiCard: {
       root: {
         padding: '12px',
+      },
+    },
+    //https://codesandbox.io/s/v30yq681ql?file=/src/withRoot.js:645-834
+    // lol do the mui folks just expect people to know to do this???
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          backgroundImage: `url(${background})`,
+        },
       },
     },
   },

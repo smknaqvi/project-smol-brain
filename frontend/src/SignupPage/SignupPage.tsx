@@ -6,26 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadingButton from '../LoadingComponents/LoadingButton';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import background from '../media/tile-background.png';
+import loginSignupTheme from '../styles/loginSignupTheme';
 
-const useStyles = makeStyles(() => ({
-  submit: {
-    marginTop: '3%',
-    marginBottom: '3%',
-    width: '100%',
-  },
-  field: {
-    width: '100%',
-    borderColor: 'black',
-  },
-  //https://stackoverflow.com/questions/57254046/react-makestyles-doesnt-set-background-image
-  box: {
-    height: '100%',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundImage: `url(${background})`,
-  },
-}));
+const useStyles = makeStyles(() => loginSignupTheme);
 function SignupPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
@@ -114,60 +97,59 @@ function SignupPage() {
   return (
     // Uncontrolled form, all values passed to us during handleSubmit event
     // https://reactjs.org/docs/uncontrolled-components.html
-    <div className={classes.box}>
-      <Box display="flex" flexDirection="row" alignItems="center" height="100%">
-        <Container maxWidth="xs">
-          <Typography variant="h3" align="center">
-            Sign Up
-          </Typography>
-          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <TextField
-                error={showUsernameError}
-                helperText={usernameErrorMessage}
-                onChange={clearUsernameErrors}
-                id="username"
-                label="Username"
-                variant="outlined"
-                className={classes.field}
-              />
-              <TextField
-                error={showPasswordError}
-                helperText={passwordErrorMessage}
-                onChange={clearPasswordErrors}
-                id="password"
-                type="password"
-                label="Password"
-                variant="outlined"
-                className={classes.field}
-              />
-              <TextField
-                error={showConfirmPasswordError}
-                helperText={confirmPasswordErrorMessage}
-                onChange={clearConfirmPasswordErrors}
-                id="cpassword"
-                type="password"
-                label="Confirm Password"
-                variant="outlined"
-                className={classes.field}
-              />
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                className={classes.submit}
-                loading={isLoading}
-                color="primary"
-              >
-                Sign Up
-              </LoadingButton>
-            </Box>
-          </form>
-          <Link href="/login" variant="body2">
-            {'Already have an account? Sign in'}
-          </Link>
-        </Container>
-      </Box>
-    </div>
+
+    <Box display="flex" flexDirection="row" alignItems="center" height="100%">
+      <Container maxWidth="xs">
+        <Typography variant="h3" align="center">
+          Sign Up
+        </Typography>
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <TextField
+              error={showUsernameError}
+              helperText={usernameErrorMessage}
+              onChange={clearUsernameErrors}
+              id="username"
+              label="Username"
+              variant="outlined"
+              className={classes.field}
+            />
+            <TextField
+              error={showPasswordError}
+              helperText={passwordErrorMessage}
+              onChange={clearPasswordErrors}
+              id="password"
+              type="password"
+              label="Password"
+              variant="outlined"
+              className={classes.field}
+            />
+            <TextField
+              error={showConfirmPasswordError}
+              helperText={confirmPasswordErrorMessage}
+              onChange={clearConfirmPasswordErrors}
+              id="cpassword"
+              type="password"
+              label="Confirm Password"
+              variant="outlined"
+              className={classes.field}
+            />
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              className={classes.submit}
+              loading={isLoading}
+              color="primary"
+            >
+              Sign Up
+            </LoadingButton>
+          </Box>
+        </form>
+        <Link href="/login" variant="body2">
+          {'Already have an account? Sign in'}
+        </Link>
+      </Container>
+    </Box>
   );
 }
 
