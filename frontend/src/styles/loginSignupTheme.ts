@@ -1,5 +1,3 @@
-import background from '../media/tile-background.png';
-
 const loginSignupTheme = {
   submit: {
     marginTop: '3%',
@@ -10,6 +8,5 @@ const loginSignupTheme = {
     width: '100%',
     borderColor: 'black',
   },
-  //https://stackoverflow.com/questions/57254046/react-makestyles-doesnt-set-background-image
 };
 export default loginSignupTheme;

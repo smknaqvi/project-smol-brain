@@ -97,7 +97,6 @@ function SignupPage() {
   return (
     // Uncontrolled form, all values passed to us during handleSubmit event
     // https://reactjs.org/docs/uncontrolled-components.html
-
     <Box display="flex" flexDirection="row" alignItems="center" height="100%">
       <Container maxWidth="xs">
         <Typography variant="h3" align="center">
