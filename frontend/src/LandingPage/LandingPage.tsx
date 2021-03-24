@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: '3%',
     width: '100%',
     height: '8vh',
+    fontSize: '2vh',
   },
 }));
 
