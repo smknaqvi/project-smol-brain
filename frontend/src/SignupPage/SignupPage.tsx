@@ -1,13 +1,14 @@
 import createPage from '../createPage';
-import { TextField, Box, Typography, Card } from '@material-ui/core';
+import { TextField, Box, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
-import LoadingButton from '../LoadingComponents/LoadingButton';
 import { makeStyles } from '@material-ui/core/styles';
+import LoadingButton from '../LoadingComponents/LoadingButton';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import background from '../media/tile-background.png';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   submit: {
     marginTop: '3%',
     marginBottom: '3%',
@@ -15,14 +16,14 @@ const useStyles = makeStyles((theme) => ({
   },
   field: {
     width: '100%',
+    borderColor: 'black',
   },
-  imageContainer: {},
-  img: {
-    animationName: 'fade',
-    animationTimingFunction: 'ease-in-out',
-    animationIterationCount: 'infinite',
-    animationDuration: '1.5s',
-    animationDirection: 'alternate',
+  //https://stackoverflow.com/questions/57254046/react-makestyles-doesnt-set-background-image
+  box: {
+    height: '100%',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: `url(${background})`,
   },
 }));
 function SignupPage() {
@@ -113,64 +114,60 @@ function SignupPage() {
   return (
     // Uncontrolled form, all values passed to us during handleSubmit event
     // https://reactjs.org/docs/uncontrolled-components.html
-    <Box display="flex" flexDirection="row" alignItems="center" height="100%">
-      <Container maxWidth="xs">
-        <Typography variant="h3" align="center">
-          Sign Up
-        </Typography>
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <TextField
-              error={showUsernameError}
-              helperText={usernameErrorMessage}
-              onChange={clearUsernameErrors}
-              id="username"
-              label="Username"
-              variant="outlined"
-              className={classes.field}
-            />
-            <TextField
-              error={showPasswordError}
-              helperText={passwordErrorMessage}
-              onChange={clearPasswordErrors}
-              id="password"
-              type="password"
-              label="Password"
-              variant="outlined"
-              className={classes.field}
-            />
-            <TextField
-              error={showConfirmPasswordError}
-              helperText={confirmPasswordErrorMessage}
-              onChange={clearConfirmPasswordErrors}
-              id="cpassword"
-              type="password"
-              label="Confirm Password"
-              variant="outlined"
-              className={classes.field}
-            />
-            <LoadingButton
-              type="submit"
-              variant="contained"
-              className={classes.submit}
-              loading={isLoading}
-              color="primary"
-            >
-              Sign Up
-            </LoadingButton>
-          </Box>
-        </form>
-        <Link href="/login" variant="body2">
-          {'Already have an account? Sign in'}
-        </Link>
-      </Container>
-      <div className={classes.imageContainer}>
-        <img src="//placehold.it/450x280?text=Image 1" alt="" />
-        <img src="//placehold.it/450x280?text=Image 2" alt="" />
-        <img src="//placehold.it/450x280?text=Image 3" alt="" />
-        <img src="//placehold.it/450x280?text=Image 4" alt="" />
-      </div>
-    </Box>
+    <div className={classes.box}>
+      <Box display="flex" flexDirection="row" alignItems="center" height="100%">
+        <Container maxWidth="xs">
+          <Typography variant="h3" align="center">
+            Sign Up
+          </Typography>
+          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <TextField
+                error={showUsernameError}
+                helperText={usernameErrorMessage}
+                onChange={clearUsernameErrors}
+                id="username"
+                label="Username"
+                variant="outlined"
+                className={classes.field}
+              />
+              <TextField
+                error={showPasswordError}
+                helperText={passwordErrorMessage}
+                onChange={clearPasswordErrors}
+                id="password"
+                type="password"
+                label="Password"
+                variant="outlined"
+                className={classes.field}
+              />
+              <TextField
+                error={showConfirmPasswordError}
+                helperText={confirmPasswordErrorMessage}
+                onChange={clearConfirmPasswordErrors}
+                id="cpassword"
+                type="password"
+                label="Confirm Password"
+                variant="outlined"
+                className={classes.field}
+              />
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                className={classes.submit}
+                loading={isLoading}
+                color="primary"
+              >
+                Sign Up
+              </LoadingButton>
+            </Box>
+          </form>
+          <Link href="/login" variant="body2">
+            {'Already have an account? Sign in'}
+          </Link>
+        </Container>
+      </Box>
+    </div>
   );
 }
 

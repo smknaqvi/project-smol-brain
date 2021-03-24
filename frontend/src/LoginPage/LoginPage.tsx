@@ -5,6 +5,8 @@ import LoadingButton from '../LoadingComponents/LoadingButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import background from '../media/tile-background.png';
+
 const useStyles = makeStyles(() => ({
   submit: {
     marginTop: '3%',
@@ -20,7 +22,7 @@ const useStyles = makeStyles(() => ({
     height: '100%',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    backgroundImage: `url(https://i.ytimg.com/vi/1N2VySBDXZI/maxresdefault.jpg)`,
+    backgroundImage: `url(${background})`,
   },
 }));
 
