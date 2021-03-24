@@ -1,8 +1,28 @@
-import createPage from '../createPage';
-import { TextField, Box, Typography, Card } from '@material-ui/core';
+import { TextField, Box, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
 import LoadingButton from '../LoadingComponents/LoadingButton';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
+const useStyles = makeStyles(() => ({
+  submit: {
+    marginTop: '3%',
+    marginBottom: '3%',
+    width: '100%',
+  },
+  field: {
+    width: '100%',
+    borderColor: 'black',
+  },
+  //https://stackoverflow.com/questions/57254046/react-makestyles-doesnt-set-background-image
+  box: {
+    height: '100%',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: `url(https://i.ytimg.com/vi/1N2VySBDXZI/maxresdefault.jpg)`,
+  },
+}));
 
 function LoginPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
@@ -11,6 +31,7 @@ function LoginPage() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, setError } = useAppState();
+  const classes = useStyles();
 
   const validateForm = (username: string, password: string) => {
     let errors = false;
@@ -64,46 +85,54 @@ function LoginPage() {
     setShowPasswordError(false);
     setPasswordErrorMessage('');
   };
-
   return (
     // Uncontrolled form, all values passed to us during handleSubmit event
     // https://reactjs.org/docs/uncontrolled-components.html
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      height="100%"
-    >
-      <Card>
-        <Typography variant="h3" align="center">
-          Login
-        </Typography>
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <Box display="flex" flexDirection="column">
-            <TextField
-              error={showUsernameError}
-              helperText={usernameErrorMessage}
-              onChange={clearUsernameErrors}
-              id="username"
-              label="Username"
-            />
-            <TextField
-              error={showPasswordError}
-              helperText={passwordErrorMessage}
-              onChange={clearPasswordErrors}
-              id="password"
-              type="password"
-              label="Password"
-            />
-            <LoadingButton type="submit" loading={isLoading}>
-              Login
-            </LoadingButton>
-          </Box>
-        </form>
-      </Card>
-    </Box>
+    <div className={classes.box}>
+      <Box display="flex" flexDirection="row" alignItems="center" height="100%">
+        <Container maxWidth="xs">
+          <Typography variant="h3" align="center">
+            Login
+          </Typography>
+          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <TextField
+                error={showUsernameError}
+                helperText={usernameErrorMessage}
+                onChange={clearUsernameErrors}
+                id="username"
+                label="Username"
+                variant="outlined"
+                className={classes.field}
+              />
+              <TextField
+                error={showPasswordError}
+                helperText={passwordErrorMessage}
+                onChange={clearPasswordErrors}
+                id="password"
+                type="password"
+                label="Password"
+                variant="outlined"
+                className={classes.field}
+              />
+              <LoadingButton
+                type="submit"
+                loading={isLoading}
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Login
+              </LoadingButton>
+            </Box>
+          </form>
+          <Link href="/signup" variant="body2">
+            {"Don't have an account? Sign Up"}
+          </Link>
+        </Container>
+      </Box>
+    </div>
   );
 }
 
-export default createPage(LoginPage);
+export default LoginPage;

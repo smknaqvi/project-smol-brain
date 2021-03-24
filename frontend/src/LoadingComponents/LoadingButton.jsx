@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Box } from '@material-ui/core';
 
-const LoadingButton = (props) => {
-  if (props.loading) {
+const LoadingButton = ({ loading, ...props }) => {
+  if (loading) {
     return (
       <Box alignSelf="center">
         <CircularProgress size={25} />
@@ -9,9 +9,8 @@ const LoadingButton = (props) => {
     );
   }
 
-  const buttonProps = { ...props };
-  delete buttonProps.loading;
-  return <Button {...buttonProps}>Login</Button>;
+  //const buttonProps = { ...props };
+  return <Button {...props}></Button>;
 };
 
 export default LoadingButton;

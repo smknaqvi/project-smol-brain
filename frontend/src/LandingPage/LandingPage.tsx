@@ -2,7 +2,6 @@ import createPage from '../createPage';
 import { useState } from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';

@@ -3,7 +3,28 @@ import { TextField, Box, Typography, Card } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
 import LoadingButton from '../LoadingComponents/LoadingButton';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 
+const useStyles = makeStyles((theme) => ({
+  submit: {
+    marginTop: '3%',
+    marginBottom: '3%',
+    width: '100%',
+  },
+  field: {
+    width: '100%',
+  },
+  imageContainer: {},
+  img: {
+    animationName: 'fade',
+    animationTimingFunction: 'ease-in-out',
+    animationIterationCount: 'infinite',
+    animationDuration: '1.5s',
+    animationDirection: 'alternate',
+  },
+}));
 function SignupPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
@@ -16,8 +37,10 @@ function SignupPage() {
     confirmPasswordErrorMessage,
     setConfirmPasswordErrorMessage,
   ] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const { signUp, setError } = useAppState();
+  const classes = useStyles();
 
   function validateForm(username: string, password: string, cpassword: string) {
     let errors = false;
@@ -90,25 +113,21 @@ function SignupPage() {
   return (
     // Uncontrolled form, all values passed to us during handleSubmit event
     // https://reactjs.org/docs/uncontrolled-components.html
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      height="100%"
-    >
-      <Card>
+    <Box display="flex" flexDirection="row" alignItems="center" height="100%">
+      <Container maxWidth="xs">
         <Typography variant="h3" align="center">
           Sign Up
         </Typography>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" alignItems="center">
             <TextField
               error={showUsernameError}
               helperText={usernameErrorMessage}
               onChange={clearUsernameErrors}
               id="username"
               label="Username"
+              variant="outlined"
+              className={classes.field}
             />
             <TextField
               error={showPasswordError}
@@ -117,6 +136,8 @@ function SignupPage() {
               id="password"
               type="password"
               label="Password"
+              variant="outlined"
+              className={classes.field}
             />
             <TextField
               error={showConfirmPasswordError}
@@ -125,13 +146,30 @@ function SignupPage() {
               id="cpassword"
               type="password"
               label="Confirm Password"
+              variant="outlined"
+              className={classes.field}
             />
-            <LoadingButton type="submit" loading={isLoading}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              className={classes.submit}
+              loading={isLoading}
+              color="primary"
+            >
               Sign Up
             </LoadingButton>
           </Box>
         </form>
-      </Card>
+        <Link href="/login" variant="body2">
+          {'Already have an account? Sign in'}
+        </Link>
+      </Container>
+      <div className={classes.imageContainer}>
+        <img src="//placehold.it/450x280?text=Image 1" alt="" />
+        <img src="//placehold.it/450x280?text=Image 2" alt="" />
+        <img src="//placehold.it/450x280?text=Image 3" alt="" />
+        <img src="//placehold.it/450x280?text=Image 4" alt="" />
+      </div>
     </Box>
   );
 }
