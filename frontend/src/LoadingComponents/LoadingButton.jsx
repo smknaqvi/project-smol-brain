@@ -8,8 +8,6 @@ const LoadingButton = ({ loading, ...props }) => {
       </Box>
     );
   }
-
-  //const buttonProps = { ...props };
   return <Button {...props}></Button>;
 };
 
