@@ -20,24 +20,5 @@ services:
       - 127.0.0.1:6379:6379
     restart: unless-stopped
 
-  backend:
-    container_name: ytparty-backend
-    build: ./backend
-    depends_on:
-      - redis
-      - mongodb
-    ports:
-      - 127.0.0.1:5000:5000
-    env_file:
-      - ./backend/.env
-    restart: unless-stopped
-
-  frontend:
-    container_name: ytparty-frontend
-    build: ./frontend
-    ports:
-      - 127.0.0.1:3000:3000
-    restart: unless-stopped
-
 volumes:
   ytparty-mongodb-data:

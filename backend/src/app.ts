@@ -6,14 +6,20 @@ import { sessionParser } from './middleware/session';
 import authRouter from './routes/auth';
 import partyRouter from './routes/party';
 import cors from 'cors';
-
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import redis from 'redis';
+import connectRedis from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import { ioFunction } from './sockets/sockets';
 dotenv.config();
 const frontendOrigin = process.env.FRONTEND_ORIGIN;
+const port = process.env.PORT;
+const dbURI = process.env.DB_URI;
+const redisURI = process.env.REDIS_URI;
+const redisPort = parseInt(process.env.REDIS_PORT as string);
+
 const corsOptions = {
   origin: frontendOrigin,
   credentials: true,
@@ -22,24 +28,24 @@ const corsOptions = {
 
 const app = express();
 const server = createServer(app);
-const urls = new Map();
+const urls = new Map<string, string>();
 export const io = new Server(server, { cors: corsOptions });
-ioFunction(io, urls);
-
-const port = process.env.PORT;
-const dbURI = process.env.DB_URI;
+const RedisStore = connectRedis(session);
+const redisClient = redis.createClient({ host: redisURI, port: redisPort });
 
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET as string,
+  store: new RedisStore({ client: redisClient }),
   resave: false,
   saveUninitialized: true,
   cookie: { domain: process.env.ROOT_DOMAIN },
 });
-
 app.use(sessionMiddleware);
+ioFunction(io, urls, sessionMiddleware);
 app.use(sessionParser);
 app.use(cookieParser());
 
