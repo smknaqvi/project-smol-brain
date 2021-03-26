@@ -2,11 +2,8 @@ import { TextField, Box, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
 import LoadingButton from '../LoadingComponents/LoadingButton';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import loginSignupTheme from '../styles/loginSignupTheme';
-const useStyles = makeStyles(() => loginSignupTheme);
 
 function LoginPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
@@ -15,8 +12,7 @@ function LoginPage() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, setError } = useAppState();
-  const classes = useStyles();
-  console.log(classes);
+
   const validateForm = (username: string, password: string) => {
     let errors = false;
     if (!username) {
@@ -87,7 +83,7 @@ function LoginPage() {
               id="username"
               label="Username"
               variant="outlined"
-              className={classes.field}
+              fullWidth={true}
             />
             <TextField
               error={showPasswordError}
@@ -97,21 +93,21 @@ function LoginPage() {
               type="password"
               label="Password"
               variant="outlined"
-              className={classes.field}
+              fullWidth={true}
             />
             <LoadingButton
               type="submit"
               loading={isLoading}
               variant="contained"
               color="primary"
-              className={classes.submit}
+              fullWidth={true}
             >
               Login
             </LoadingButton>
           </Box>
         </form>
         <Link href="/signup" variant="body2">
-          {"Don't have an account? Sign Up"}
+          "Don't have an account? Sign Up"
         </Link>
       </Container>
     </Box>

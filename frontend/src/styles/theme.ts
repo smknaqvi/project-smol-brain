@@ -15,6 +15,7 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         padding: '8px',
+        margin: '8px',
       },
     },
     MuiTextField: {

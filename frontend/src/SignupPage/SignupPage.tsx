@@ -2,13 +2,10 @@ import createPage from '../createPage';
 import { TextField, Box, Typography } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppState } from '../state';
-import { makeStyles } from '@material-ui/core/styles';
 import LoadingButton from '../LoadingComponents/LoadingButton';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import loginSignupTheme from '../styles/loginSignupTheme';
 
-const useStyles = makeStyles(() => loginSignupTheme);
 function SignupPage() {
   const [showUsernameError, setShowUsernameError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
@@ -24,7 +21,6 @@ function SignupPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const { signUp, setError } = useAppState();
-  const classes = useStyles();
 
   function validateForm(username: string, password: string, cpassword: string) {
     let errors = false;
@@ -111,7 +107,7 @@ function SignupPage() {
               id="username"
               label="Username"
               variant="outlined"
-              className={classes.field}
+              fullWidth={true}
             />
             <TextField
               error={showPasswordError}
@@ -121,7 +117,7 @@ function SignupPage() {
               type="password"
               label="Password"
               variant="outlined"
-              className={classes.field}
+              fullWidth={true}
             />
             <TextField
               error={showConfirmPasswordError}
@@ -131,21 +127,21 @@ function SignupPage() {
               type="password"
               label="Confirm Password"
               variant="outlined"
-              className={classes.field}
+              fullWidth={true}
             />
             <LoadingButton
               type="submit"
               variant="contained"
-              className={classes.submit}
               loading={isLoading}
               color="primary"
+              fullWidth={true}
             >
               Sign Up
             </LoadingButton>
           </Box>
         </form>
         <Link href="/login" variant="body2">
-          {'Already have an account? Sign in'}
+          'Already have an account? Log in'
         </Link>
       </Container>
     </Box>

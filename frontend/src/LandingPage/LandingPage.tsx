@@ -15,9 +15,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   button: {
-    marginTop: '3%',
-    marginBottom: '3%',
-    width: '100%',
     height: '8vh',
     fontSize: '2vh',
   },
