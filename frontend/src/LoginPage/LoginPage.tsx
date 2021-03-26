@@ -70,6 +70,8 @@ function LoginPage() {
     // https://reactjs.org/docs/uncontrolled-components.html
 
     <Box display="flex" flexDirection="row" alignItems="center" height="100%">
+      {/* https://github.com/mui-org/material-ui/blob/master/docs/src/
+      pages/getting-started/templates/sign-in/SignIn.js */}
       <Container maxWidth="xs">
         <Typography variant="h3" align="center">
           Login
@@ -106,6 +108,8 @@ function LoginPage() {
             </LoadingButton>
           </Box>
         </form>
+        {/* https://github.com/mui-org/material-ui/blob/master/docs/src/
+      pages/getting-started/templates/sign-in/SignIn.js */}
         <Link href="/signup" variant="body2">
           Don't have an account? Sign Up
         </Link>

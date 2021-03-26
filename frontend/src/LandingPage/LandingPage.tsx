@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
   button: {
     height: '8vh',
     fontSize: '2vh',
+    margin: '8px',
   },
 }));
 
