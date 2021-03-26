@@ -141,7 +141,7 @@ function SignupPage() {
           </Box>
         </form>
         <Link href="/login" variant="body2">
-          'Already have an account? Log in'
+          Already have an account? Log in
         </Link>
       </Container>
     </Box>

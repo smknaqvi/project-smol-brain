@@ -107,7 +107,7 @@ function LoginPage() {
           </Box>
         </form>
         <Link href="/signup" variant="body2">
-          "Don't have an account? Sign Up"
+          Don't have an account? Sign Up
         </Link>
       </Container>
     </Box>
