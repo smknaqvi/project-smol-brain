@@ -7,6 +7,7 @@ export const ioFunction = (io: Server, session: RequestHandler): void => {
   io.use(sharedSession(session));
 
   io.on('connection', async (socket: Socket) => {
+    console.log('on connection!');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     console.log('Username:', (socket.handshake as any).session?.username);
     console.log(`Client ${socket.id} connected`);

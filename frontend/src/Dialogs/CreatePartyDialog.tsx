@@ -112,9 +112,7 @@ function CreatePartyDialog({
           <Button
             // https://stackoverflow.com/q/40881616
             type="submit" //set the buttom type is submit
-            onClick={() => {
-              goToParty();
-            }}
+            onClick={goToParty}
             color="primary"
           >
             Create
