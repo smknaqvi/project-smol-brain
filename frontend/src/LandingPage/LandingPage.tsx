@@ -43,6 +43,19 @@ function LandingPage() {
   const handleCreateDialogClose = () => {
     setCreateDialogOpen(false);
   };
+
+  const createParty = () => {
+    API.put(`/party/new`)
+      .then((res) => {
+        const partyID = res.data;
+        history.push({
+          pathname: `/party/${partyID}`,
+        });
+      })
+      .catch((err) => {
+        setError(new Error('Specified Party ID Does not Exist'));
+      });
+  };
   const goToParty = (partyID: string, isNewParty: boolean) => {
     if (!isNewParty) {
       API.get(`/party/${partyID}`)
@@ -77,7 +90,7 @@ function LandingPage() {
       <CreatePartyDialog
         isOpen={createDialogOpen}
         closeFunction={handleCreateDialogClose}
-        goToParty={goToParty}
+        goToParty={createParty}
       />
       <img src={logo} alt="Logo" />
       <ButtonGroup

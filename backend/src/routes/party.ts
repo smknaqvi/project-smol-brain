@@ -1,5 +1,7 @@
 import { Request, Response, Router } from 'express';
-import { io } from '../app';
+import { io, redisClient } from '../app';
+import { v4 as uuidv4 } from 'uuid';
+
 const router = Router();
 
 router.get('/:id', (req: Request, res: Response) => {
@@ -12,4 +14,9 @@ router.get('/:id', (req: Request, res: Response) => {
   }
 });
 
+router.put('/new', (req: Request, res: Response) => {
+  const partyID: string = uuidv4();
+  redisClient.hset(partyID, 'created_at', JSON.stringify(new Date()));
+  res.json(partyID);
+});
 export default router;

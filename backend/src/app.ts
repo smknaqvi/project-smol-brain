@@ -13,6 +13,9 @@ import redis from 'redis';
 import connectRedis from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import { ioFunction } from './sockets/sockets';
+import { promisify } from 'util';
+import { promises } from 'node:dns';
+
 dotenv.config();
 const frontendOrigin = process.env.FRONTEND_ORIGIN;
 const port = process.env.PORT;
@@ -28,10 +31,39 @@ const corsOptions = {
 
 const app = express();
 const server = createServer(app);
-const urls = new Map<string, string>();
 export const io = new Server(server, { cors: corsOptions });
 const RedisStore = connectRedis(session);
-const redisClient = redis.createClient({ host: redisURI, port: redisPort });
+export const redisClient = redis.createClient({
+  host: redisURI,
+  port: redisPort,
+});
+
+//export const setAsync = promisify(redisClient.hset).bind(redisClient);
+//export const getAsync = promisify(redisClient.hget).bind(redisClient);
+
+// god bless Paul Merrill
+//https://stackoverflow.com/a/62335120
+export const setAsync = promisify(
+  (redisClient.hget as unknown) as (
+    key: string,
+    field: string
+  ) => Promise<number>
+).bind(redisClient);
+
+export const getAsync = promisify(
+  (redisClient.hget as unknown) as (
+    key: string,
+    field: string
+  ) => Promise<string>
+).bind(redisClient);
+
+export const delAsync = promisify(
+  (redisClient.del as unknown) as (arg0: string) => Promise<number>
+).bind(redisClient);
+
+export const existsAsync = promisify(
+  (redisClient.exists as unknown) as (arg0: string) => Promise<boolean>
+).bind(redisClient);
 
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,7 +77,7 @@ const sessionMiddleware = session({
   cookie: { domain: process.env.ROOT_DOMAIN },
 });
 app.use(sessionMiddleware);
-ioFunction(io, urls, sessionMiddleware);
+ioFunction(io, sessionMiddleware);
 app.use(sessionParser);
 app.use(cookieParser());
 

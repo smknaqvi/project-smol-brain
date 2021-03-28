@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import useSocket from './useSocket';
+import { useHistory } from 'react-router-dom';
 
 export default function usePlayerConnection() {
+  const history = useHistory();
+
   const socket = useSocket();
   const [submittedURL, setSubmittedURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,6 +17,11 @@ export default function usePlayerConnection() {
         setNotice('New user joined! Video paused.');
       }
       setIsPlaying(false);
+    });
+
+    socket.on('error', () => {
+      console.log('there was an error');
+      history.replace('/');
     });
 
     socket.on('play', (timestamp: number) => {
