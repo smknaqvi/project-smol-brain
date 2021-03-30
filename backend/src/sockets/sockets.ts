@@ -14,18 +14,14 @@ export const ioFunction = (io: Server, session: RequestHandler): void => {
     const partyID = socket.handshake.query['partyID'] as string;
     const roomExists = await exists(partyID);
     if (!roomExists) {
-      console.log('disconnecting');
       io.to(socket.id).emit('error', 'Unauthorized');
-      //socket.disconnect();
     } else {
       const url = await get(partyID, 'current_url');
       if (url) {
         io.to(socket.id).emit('url', url);
       }
-      console.log('joining up');
       //create new room and redirect, but check permissions
       socket.join(partyID);
-
       io.sockets.to(partyID).emit('new-connection', socket.id);
     }
 
@@ -42,7 +38,6 @@ export const ioFunction = (io: Server, session: RequestHandler): void => {
     socket.on('url', async (url: string) => {
       console.log(`Client ${socket.id} set url to ${url}`);
       await set(partyID, 'current_url', url);
-
       io.sockets.in(partyID).emit('url', encodeURI(url));
     });
 
