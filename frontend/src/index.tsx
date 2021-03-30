@@ -9,16 +9,15 @@ import AppStateProvider from './state';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <AppStateProvider>
-          <App />
-        </AppStateProvider>
-      </Router>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Router>
+      <AppStateProvider>
+        <App />
+      </AppStateProvider>
+    </Router>
+  </ThemeProvider>,
+
   document.getElementById('root')
 );
 

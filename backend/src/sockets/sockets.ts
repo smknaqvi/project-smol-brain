@@ -42,6 +42,7 @@ export const ioFunction = (io: Server, session: RequestHandler): void => {
     });
 
     socket.on('disconnect', async () => {
+      console.log('disconnecting');
       const roomParticipants = io.sockets.adapter.rooms.get(partyID);
       if (!roomParticipants || !roomParticipants.size) {
         await del(partyID);

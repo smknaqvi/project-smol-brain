@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { io, redisClient } from '../app';
 import { v4 as uuidv4 } from 'uuid';
+import { set, exists } from '../app';
 
 const router = Router();
 
@@ -14,9 +15,17 @@ router.get('/:id', (req: Request, res: Response) => {
   }
 });
 
-router.put('/new', (req: Request, res: Response) => {
-  const partyID: string = uuidv4();
-  redisClient.hset(partyID, 'created_at', JSON.stringify(new Date()));
+router.put('/new', async (req: Request, res: Response) => {
+  let partyIDexists = true;
+  let partyID = '';
+  while (partyIDexists) {
+    partyID = uuidv4();
+    if (!(await exists(partyID))) {
+      partyIDexists = false;
+    }
+  }
+
+  await set(partyID, 'created_at', JSON.stringify(new Date()));
   res.json(partyID);
 });
 export default router;

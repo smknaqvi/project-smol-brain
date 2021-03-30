@@ -15,7 +15,6 @@ export default function useSocket(): Socket {
   );
 
   useEffect(() => {
-    socket.emit('connection');
     return () => {
       socket.disconnect();
     };
