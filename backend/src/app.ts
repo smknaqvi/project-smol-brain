@@ -38,30 +38,28 @@ export const redisClient = redis.createClient({
   port: redisPort,
 });
 
-//export const setAsync = promisify(redisClient.hset).bind(redisClient);
-//export const getAsync = promisify(redisClient.hget).bind(redisClient);
-
 // god bless Paul Merrill
 //https://stackoverflow.com/a/62335120
-export const setAsync = promisify(
-  (redisClient.hget as unknown) as (
+export const set = promisify(
+  (redisClient.hset as unknown) as (
     key: string,
-    field: string
+    field: string,
+    value: string
   ) => Promise<number>
 ).bind(redisClient);
 
-export const getAsync = promisify(
+export const get = promisify(
   (redisClient.hget as unknown) as (
     key: string,
     field: string
   ) => Promise<string>
 ).bind(redisClient);
 
-export const delAsync = promisify(
+export const del = promisify(
   (redisClient.del as unknown) as (arg0: string) => Promise<number>
 ).bind(redisClient);
 
-export const existsAsync = promisify(
+export const exists = promisify(
   (redisClient.exists as unknown) as (arg0: string) => Promise<boolean>
 ).bind(redisClient);
 

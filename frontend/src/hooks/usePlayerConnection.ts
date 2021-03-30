@@ -37,7 +37,7 @@ export default function usePlayerConnection() {
       console.log('RECEIVED URL');
       setSubmittedURL(url);
     });
-  }, [socket]);
+  }, [socket, history]);
 
   const handlePlay = useCallback(
     (timestamp: number): void => {

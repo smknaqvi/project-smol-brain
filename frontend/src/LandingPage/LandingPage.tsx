@@ -56,22 +56,16 @@ function LandingPage() {
         setError(new Error('Specified Party ID Does not Exist'));
       });
   };
-  const goToParty = (partyID: string, isNewParty: boolean) => {
-    if (!isNewParty) {
-      API.get(`/party/${partyID}`)
-        .then((res) => {
-          history.push({
-            pathname: `/party/${partyID}`,
-          });
-        })
-        .catch((err) => {
-          setError(new Error('Specified Party ID Does not Exist'));
+  const joinParty = (partyID: string) => {
+    API.get(`/party/${partyID}`)
+      .then((res) => {
+        history.push({
+          pathname: `/party/${partyID}`,
         });
-    } else {
-      history.push({
-        pathname: `/party/${partyID}`,
+      })
+      .catch((err) => {
+        setError(new Error('Specified Party ID Does not Exist'));
       });
-    }
   };
 
   return (
@@ -85,7 +79,7 @@ function LandingPage() {
       <JoinPartyDialog
         isOpen={joinDialogOpen}
         closeFunction={handleJoinDialogClose}
-        goToParty={goToParty}
+        goToParty={joinParty}
       />
       <CreatePartyDialog
         isOpen={createDialogOpen}
