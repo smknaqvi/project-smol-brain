@@ -40,7 +40,7 @@ Note: this can be used for development as well if you skip the steps labelled (P
 
 1. Run docker-compose
 
-   `docker-compose up -d`
+   `docker-compose build && docker-compose up -d`
 
 The frontend should be listening on port 3000 and the backend on 5000. Just stick your favourite reverse proxy in front of it!
 

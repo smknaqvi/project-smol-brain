@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { createAdapter } from 'socket.io-redis';
 import bodyParser from 'body-parser';
 import { sessionParser } from './middleware/session';
 import authRouter from './routes/auth';
@@ -14,7 +15,6 @@ import connectRedis from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import { ioFunction } from './sockets/sockets';
 import { promisify } from 'util';
-import { promises } from 'node:dns';
 
 dotenv.config();
 const frontendOrigin = process.env.FRONTEND_ORIGIN;
@@ -37,6 +37,9 @@ export const redisClient = redis.createClient({
   host: redisURI,
   port: redisPort,
 });
+export const pubClient = redisClient.duplicate();
+export const subClient = pubClient.duplicate();
+io.adapter(createAdapter({pubClient, subClient}));
 
 // god bless Paul Merrill
 //https://stackoverflow.com/a/62335120
