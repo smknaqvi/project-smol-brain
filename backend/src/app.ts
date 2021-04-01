@@ -39,7 +39,7 @@ export const redisClient = redis.createClient({
 });
 export const pubClient = redisClient.duplicate();
 export const subClient = pubClient.duplicate();
-io.adapter(createAdapter({pubClient, subClient}));
+io.adapter(createAdapter({ pubClient, subClient }));
 
 // god bless Paul Merrill
 //https://stackoverflow.com/a/62335120
@@ -93,11 +93,9 @@ connection.once('open', () => {
   console.log('MongoDB Database connection successful!');
 });
 
+app.use(express.static('apidocs'));
 app.use('/auth', authRouter);
 app.use('/party', partyRouter);
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Hello World!' });
-});
 
 server.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);

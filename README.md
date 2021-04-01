@@ -45,3 +45,13 @@ Note: this can be used for development as well if you skip the steps labelled (P
 The frontend should be listening on port 3000 and the backend on 5000. Just stick your favourite reverse proxy in front of it!
 
 > Note: the docker containers binds to 127.0.0.1:PORT:PORT which means that it only binds to docker's network interface. If you aren't using a reverse proxy and want to expose this to the public, you'll need to modify the docker-compose file to bind directly to PORT:PORT instead
+
+## API Documentation
+
+Our documentation is live at [http://api.ytparty.ml/](http://api.ytparty.ml/)
+
+Also feel free to build the documentation for yourself within `./backend`
+
+`npm run docs`
+
+To view the built documentation, open the `index.html` file in `./backend/apidoc/` in your favourite browser

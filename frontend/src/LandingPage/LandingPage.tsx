@@ -47,7 +47,7 @@ function LandingPage() {
   const createParty = () => {
     API.put(`/party/new`)
       .then((res) => {
-        const partyID = res.data;
+        const partyID = res.data.partyID;
         history.push({
           pathname: `/party/${partyID}`,
         });

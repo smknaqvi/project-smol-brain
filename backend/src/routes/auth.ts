@@ -6,6 +6,46 @@ import User, { UserDocument } from '../models/user.model';
 
 const router = Router();
 
+/**
+ * @api {post} /auth/signup Create a new user account
+ * @apiName PostAuthSignup
+ * @apiGroup Auth
+ * @apiDescription Create a new user account and sets a session cookie
+ *
+ * @apiParam {String} username New user's username
+ * @apiParam {String} password New user's password
+ *
+ * @apiSuccess {String} message Success message
+ *
+ * @apiSuccessExample Success Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "User John signed up successfully",
+ *     }
+ *
+ * @apiError {String} error Error message
+ *
+ * @apiErrorExample Bad Request:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "error": "Missing username or password"
+ *     }
+ *
+ * @apiErrorExample Conflict:
+ *     HTTP/1.1 409 Conflict
+ *     {
+ *       "error": "User with username John already exists"
+ *     }
+ *
+ * @apiError (Error 5xx) {String} error Error message
+ *
+ * @apiErrorExample Internal Server Error:
+ *     HTTP/1.1 500 Conflict
+ *     {
+ *       "error": "Internal Server Error"
+ *     }
+ *
+ */
 router.post('/signup', (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -20,7 +60,7 @@ router.post('/signup', (req: Request, res: Response) => {
     if (user) {
       return res
         .status(409)
-        .json({ error: `User with ${username} already exists` });
+        .json({ error: `User with username ${username} already exists` });
     }
     hashPassword(password)
       .then((hashedPassword) => {
@@ -53,6 +93,52 @@ router.post('/signup', (req: Request, res: Response) => {
   });
 });
 
+/**
+ * @api {post} /auth/login Log in to a user's account
+ * @apiName PostAuthLogin
+ * @apiGroup Auth
+ * @apiDescription Log into a user account and sets a session cookie
+ *
+ * @apiParam {String} username User's username
+ * @apiParam {String} password User's password
+ *
+ * @apiSuccess {String} message Success message
+ *
+ * @apiSuccessExample Success Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "User John logged in successfully",
+ *     }
+ *
+ * @apiSuccessExample Already Logged In:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "User already logged in",
+ *     }
+ *
+ * @apiError {String} error Error message
+ *
+ * @apiErrorExample Bad Request:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "error": "Missing username or password"
+ *     }
+ *
+ * @apiErrorExample Unauthorized:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *       "error": "Access Denied"
+ *     }
+ *
+ * @apiError (Error 5xx) {String} error Error message
+ *
+ * @apiErrorExample Internal Server Error:
+ *     HTTP/1.1 500 Conflict
+ *     {
+ *       "error": "Internal Server Error"
+ *     }
+ *
+ */
 router.post('/login', (req: Request, res: Response) => {
   if (req.username) {
     return res.status(200).json({ message: 'User already logged in' });
@@ -88,6 +174,29 @@ router.post('/login', (req: Request, res: Response) => {
   });
 });
 
+/**
+ * @api {post} /auth/logout Logout
+ * @apiName PostAuthLogout
+ * @apiGroup Auth
+ * @apiDescription Log out of a user's account and destory session as well as session cookie
+ *
+ * @apiSuccess {String} message Success message
+ *
+ * @apiSuccessExample Success Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Logged out successfully",
+ *     }
+ *
+ * @apiError (Error 5xx) {String} error Error message
+ *
+ * @apiErrorExample Internal Server Error:
+ *     HTTP/1.1 500 Conflict
+ *     {
+ *       "error": "Internal Server Error"
+ *     }
+ *
+ */
 router.post('/logout', (req: Request, res: Response) => {
   req.session.destroy((err: Error) => {
     if (err) {
