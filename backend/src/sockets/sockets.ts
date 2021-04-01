@@ -7,14 +7,17 @@ export const ioFunction = (io: Server, session: RequestHandler): void => {
   io.use(sharedSession(session));
 
   io.on('connection', async (socket: Socket) => {
+    const session = (socket.handshake as any).session;
+    const username = session?.username;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    console.log('Username:', (socket.handshake as any).session?.username);
+    console.log('Username:', session?.username);
     console.log(`Client ${socket.id} connected`);
 
     const partyID = socket.handshake.query['partyID'] as string;
     const roomExists = await exists(partyID);
     if (!roomExists) {
-      io.to(socket.id).emit('error', 'Unauthorized');
+      console.log('invalid party id emitting');
+      io.to(socket.id).emit('invalid-party-id', 'Invalid');
     } else {
       const url = await get(partyID, 'current_url');
       if (url) {

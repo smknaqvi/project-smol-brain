@@ -10,6 +10,7 @@ export default function usePlayerConnection() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [lastSeekTime, setLastSeekTime] = useState<[number]>([0]);
   const [notice, setNotice] = useState('');
+  const [invalidPartyID, setInvalidPartyID] = useState(false);
 
   useEffect(() => {
     socket.on('new-connection', (socketID: any) => {
@@ -19,9 +20,9 @@ export default function usePlayerConnection() {
       setIsPlaying(false);
     });
 
-    socket.on('error', () => {
+    socket.on('invalid-party-id', () => {
       console.log('there was an error');
-      history.replace('/');
+      setInvalidPartyID(true);
     });
 
     socket.on('play', (timestamp: number) => {
@@ -85,5 +86,6 @@ export default function usePlayerConnection() {
     handleProgress,
     handleSetURL,
     handleSetNotice,
+    invalidPartyID,
   };
 }

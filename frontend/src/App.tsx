@@ -8,6 +8,8 @@ import { useAppState } from './state';
 import { Navbar } from './Navbar/Navbar';
 import LandingPage from './LandingPage/LandingPage';
 import PartyPage from './PartyPage/PartyPage';
+import { PrivateRoute } from './PrivateRoute/PrivateRoute';
+import InvalidRoutePage from './InvalidRoute/InvalidRoutePage';
 
 function App() {
   const { error, setError } = useAppState();
@@ -27,11 +29,14 @@ function App() {
         <Route path="/logout" exact>
           <LogoutPage />
         </Route>
-        <Route path="/party/:id">
+        <PrivateRoute path="/party/:id">
           <PartyPage />
-        </Route>
-        <Route path="/" exact>
+        </PrivateRoute>
+        <PrivateRoute path="/" exact>
           <LandingPage />
+        </PrivateRoute>
+        <Route>
+          <InvalidRoutePage></InvalidRoutePage>
         </Route>
       </Switch>
       <Snackbar

@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { io, redisClient } from '../app';
 import { v4 as uuidv4 } from 'uuid';
 import { set, exists } from '../app';
-
+import { isLoggedIn } from '../middleware/auth';
 const router = Router();
 
 /**
@@ -36,7 +36,7 @@ const router = Router();
  *     }
  */
 
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
   const partyID: string = req.params.id;
   const rooms = io.sockets.adapter.rooms;
   if (rooms.get(partyID)) {
@@ -69,7 +69,7 @@ router.get('/:id', (req: Request, res: Response) => {
  *     }
  */
 
-router.put('/new', async (req: Request, res: Response) => {
+router.put('/new', isLoggedIn, async (req: Request, res: Response) => {
   let partyIDexists = true;
   let partyID = '';
   while (partyIDexists) {
