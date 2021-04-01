@@ -38,6 +38,7 @@ export const redisClient = redis.createClient({
   host: redisURI,
   port: redisPort,
 });
+const rateLimiter = rateLimiterMiddleware(redisClient);
 export const pubClient = redisClient.duplicate();
 export const subClient = pubClient.duplicate();
 io.adapter(createAdapter({ pubClient, subClient }));
@@ -82,7 +83,6 @@ app.use(sessionMiddleware);
 ioFunction(io, sessionMiddleware);
 app.use(sessionParser);
 app.use(cookieParser());
-app.use(rateLimiterMiddleware(redisClient));
 
 mongoose.connect(dbURI as string, {
   useNewUrlParser: true,
@@ -96,8 +96,8 @@ connection.once('open', () => {
 });
 
 app.use(express.static('apidocs'));
-app.use('/auth', authRouter);
-app.use('/party', partyRouter);
+app.use('/auth', rateLimiter, authRouter);
+app.use('/party', rateLimiter, partyRouter);
 
 server.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
