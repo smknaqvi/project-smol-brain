@@ -43,9 +43,28 @@ export const ioFunction = (io: Server, session: RequestHandler): void => {
 
     socket.on('disconnect', async () => {
       console.log('disconnecting');
-      const roomParticipants = io.sockets.adapter.rooms.get(partyID);
-      if (!roomParticipants || !roomParticipants.size) {
-        await del(partyID);
+      let numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
+      if (!numParticipants) {
+        const delay = 60000;
+        setTimeout(() => {
+          numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
+          if (!numParticipants) {
+            del(partyID)
+              .then(() => {
+                console.log(
+                  `Deleted empty room after ${delay / 1000} second(s)`
+                );
+              })
+              .catch((err) => {
+                console.error(
+                  'Failed to delete room, something went wrong:',
+                  err
+                );
+              });
+          } else {
+            console.log('Did not delete room, room not empty!');
+          }
+        }, delay);
       }
       console.log(`Client ${socket.id} disconnected`);
     });

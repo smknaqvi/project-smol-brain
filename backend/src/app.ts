@@ -15,6 +15,7 @@ import connectRedis from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import { ioFunction } from './sockets/sockets';
 import { promisify } from 'util';
+import { rateLimiterMiddleware } from './middleware/ratelimit';
 
 dotenv.config();
 const frontendOrigin = process.env.FRONTEND_ORIGIN;
@@ -81,6 +82,7 @@ app.use(sessionMiddleware);
 ioFunction(io, sessionMiddleware);
 app.use(sessionParser);
 app.use(cookieParser());
+app.use(rateLimiterMiddleware(redisClient));
 
 mongoose.connect(dbURI as string, {
   useNewUrlParser: true,
