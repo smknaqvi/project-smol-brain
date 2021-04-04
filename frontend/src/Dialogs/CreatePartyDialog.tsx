@@ -4,35 +4,21 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
+import { useState } from 'react';
 
-const useStyles = makeStyles(() => ({
-  dialogContent: {
-    textAlign: 'center',
-  },
-  PopperProps: {
-    fontSize: '20px',
-  },
-  tooltip: {
-    fontSize: '20px',
-    popper: {
-      fontSize: '20px',
-    },
-  },
-}));
 interface DialogPropsInterface {
   closeFunction: () => void;
-  goToParty: () => void;
+  createParty: (password: string) => void;
   isOpen: boolean;
 }
 
 function CreatePartyDialog({
   closeFunction,
-  goToParty,
+  createParty,
   isOpen,
 }: DialogPropsInterface) {
-  const classes = useStyles();
-
+  const [password, setPassword] = useState('');
   return (
     <div>
       <Dialog
@@ -41,13 +27,20 @@ function CreatePartyDialog({
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Create a party</DialogTitle>
-        <DialogContent className={classes.dialogContent}>
+        <DialogContent>
           <DialogContentText>
             When you hit Create, you'll be taken to a room with a unique Party
             ID. Copy it to your clipboard and keep it somewhere safe. This is
             what you'll use to invite others to your party. (It'll also be in
             the URL of your room).
           </DialogContentText>
+          <TextField
+            label="Room Password (Optional)"
+            value={password}
+            onChange={({ target: { value } }) => setPassword(value)}
+            type="password"
+            fullWidth={true}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={closeFunction} color="primary">
@@ -56,7 +49,7 @@ function CreatePartyDialog({
           <Button
             // https://stackoverflow.com/q/40881616
             type="submit" //set the buttom type is submit
-            onClick={goToParty}
+            onClick={() => createParty(password)}
             color="primary"
           >
             Create

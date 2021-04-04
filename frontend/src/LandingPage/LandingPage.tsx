@@ -1,5 +1,5 @@
 import createPage from '../createPage';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 import Button from '@material-ui/core/Button';
@@ -44,29 +44,45 @@ function LandingPage() {
     setCreateDialogOpen(false);
   };
 
-  const createParty = () => {
-    API.put(`/party/new`)
-      .then((res) => {
-        const partyID = res.data.partyID;
-        history.push({
-          pathname: `/party/${partyID}`,
+  const createParty = useCallback(
+    (password = '') => {
+      API.put(`/party/new`, { password })
+        .then((res) => {
+          const partyID = res.data.partyID;
+          history.push({
+            pathname: `/party/${partyID}`,
+            state: {
+              isValidated: true,
+              hasPassword: res.data.hasPassword,
+              password: password || undefined
+            }
+          });
+        })
+        .catch(() => {
+          setError(new Error('Specified Party ID Does not Exist'));
         });
-      })
-      .catch((err) => {
-        setError(new Error('Specified Party ID Does not Exist'));
-      });
-  };
-  const joinParty = (partyID: string) => {
-    API.get(`/party/${partyID}`)
-      .then((res) => {
-        history.push({
-          pathname: `/party/${partyID}`,
+    },
+    [history, setError]
+  );
+
+  const joinParty = useCallback(
+    (partyID: string) => {
+      API.get(`/party/${partyID}`)
+        .then((res) => {
+          history.push({
+            pathname: `/party/${partyID}`,
+            state: {
+              isValidated: true,
+              hasPassword: res.data.hasPassword
+            }
+          });
+        })
+        .catch(() => {
+          setError(new Error('Invalid Party ID or Room Password'));
         });
-      })
-      .catch((err) => {
-        setError(new Error('Specified Party ID Does not Exist'));
-      });
-  };
+    },
+    [history, setError]
+  );
 
   return (
     <Box
@@ -79,12 +95,12 @@ function LandingPage() {
       <JoinPartyDialog
         isOpen={joinDialogOpen}
         closeFunction={handleJoinDialogClose}
-        goToParty={joinParty}
+        joinParty={joinParty}
       />
       <CreatePartyDialog
         isOpen={createDialogOpen}
         closeFunction={handleCreateDialogClose}
-        goToParty={createParty}
+        createParty={createParty}
       />
       <img src={logo} alt="Logo" />
       <ButtonGroup

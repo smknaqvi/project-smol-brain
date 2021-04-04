@@ -1,15 +1,16 @@
 import { Request, Response, Router } from 'express';
-import { io, redisClient } from '../app';
 import { v4 as uuidv4 } from 'uuid';
-import { set, exists } from '../app';
 import { isLoggedIn } from '../middleware/auth';
+import { set, exists, get } from '../lib/redis';
+import { hashPassword } from '../lib/crypto';
+
 const router = Router();
 
 /**
  * @api {get} /party/:id check if a party exists
  * @apiName GetParty
  * @apiGroup Party
- * @apiDescription Check that a party exists. Must have a valid session.
+ * @apiDescription Check that a party exists and if it is password protected. Must have a valid session.
  *
  * @apiParam {String} id Party ID to check for
  *
@@ -19,6 +20,7 @@ const router = Router();
  *     HTTP/1.1 200 OK
  *     {
  *       "message": "Valid",
+ *       "hasPassword": true
  *     }
  *
  * @apiError {String} error Error message
@@ -36,11 +38,13 @@ const router = Router();
  *     }
  */
 
-router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
+router.get('/:id', isLoggedIn, async (req: Request, res: Response) => {
   const partyID: string = req.params.id;
-  const rooms = io.sockets.adapter.rooms;
-  if (rooms.get(partyID)) {
-    return res.status(200).json({ message: 'Valid' });
+  const isValid = await exists(partyID);
+
+  if (isValid) {
+    const hasPassword = !!(await get(partyID, 'password'));
+    return res.status(200).json({ message: 'Valid', hasPassword });
   } else {
     return res.status(404).json({ error: 'Invalid' });
   }
@@ -70,6 +74,8 @@ router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
  */
 
 router.put('/new', isLoggedIn, async (req: Request, res: Response) => {
+  const password = req.body.password;
+
   let partyIDexists = true;
   let partyID = '';
   while (partyIDexists) {
@@ -79,7 +85,11 @@ router.put('/new', isLoggedIn, async (req: Request, res: Response) => {
     }
   }
 
+  if (password) {
+    await set(partyID, 'password', await hashPassword(password));
+  }
   await set(partyID, 'created_at', JSON.stringify(new Date()));
   res.json({ partyID });
 });
+
 export default router;

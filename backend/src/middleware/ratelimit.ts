@@ -1,8 +1,10 @@
 import { RedisClient } from 'redis';
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 
-export const rateLimiterMiddleware = (redisClient: RedisClient) => {
+export const rateLimiterMiddleware = (
+  redisClient: RedisClient
+): RequestHandler => {
   const rateLimiter = new RateLimiterRedis({
     storeClient: redisClient,
     keyPrefix: 'ratelimitmiddleware',
@@ -10,7 +12,7 @@ export const rateLimiterMiddleware = (redisClient: RedisClient) => {
     duration: 1,
   });
 
-  return (req: Request, res: Response, next: () => any) => {
+  return (req, res, next) => {
     rateLimiter
       .consume(req.ip)
       .then(() => {

@@ -2,27 +2,25 @@ import { useCallback, useEffect, useState } from 'react';
 import useSocket from './useSocket';
 import { useHistory } from 'react-router-dom';
 
-export default function usePlayerConnection() {
+export default function usePlayerConnection(partyID: string, password: string) {
   const history = useHistory();
 
-  const socket = useSocket();
+  const socket = useSocket(partyID, password);
   const [submittedURL, setSubmittedURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [lastSeekTime, setLastSeekTime] = useState<[number]>([0]);
   const [notice, setNotice] = useState('');
-  const [invalidPartyID, setInvalidPartyID] = useState(false);
 
   useEffect(() => {
-    socket.on('new-connection', (socketID: any) => {
+    socket.on('new-connection', (socketID: string) => {
       if (socket.id !== socketID) {
         setNotice('New user joined! Video paused.');
       }
       setIsPlaying(false);
     });
 
-    socket.on('invalid-party-id', () => {
-      console.log('there was an error');
-      setInvalidPartyID(true);
+    socket.on('connect_error', () => {
+      history.replace('/');
     });
 
     socket.on('play', (timestamp: number) => {
@@ -35,14 +33,12 @@ export default function usePlayerConnection() {
     });
 
     socket.on('url', (url: string) => {
-      console.log('RECEIVED URL');
       setSubmittedURL(url);
     });
   }, [socket, history]);
 
   const handlePlay = useCallback(
     (timestamp: number): void => {
-      console.log(`Play`);
       socket.emit('play', timestamp);
       setIsPlaying(true);
     },
@@ -51,21 +47,15 @@ export default function usePlayerConnection() {
 
   const handlePause = useCallback(
     (timestamp: number): void => {
-      console.log('Pause');
       socket.emit('pause', timestamp);
-      // do not set last seek time in here
+      // do not set last seek time in here it will cause infinte jitter
       setIsPlaying(false);
     },
     [socket]
   );
 
-  const handleProgress = useCallback((timestamp: number): void => {
-    console.log('Progress', timestamp);
-  }, []);
-
   const handleSetURL = useCallback(
     (url: string): void => {
-      console.log(`Set URL: ${url}`);
       socket.emit('url', url);
       setSubmittedURL(url);
     },
@@ -83,9 +73,7 @@ export default function usePlayerConnection() {
     lastSeekTime,
     handlePlay,
     handlePause,
-    handleProgress,
     handleSetURL,
     handleSetNotice,
-    invalidPartyID,
   };
 }

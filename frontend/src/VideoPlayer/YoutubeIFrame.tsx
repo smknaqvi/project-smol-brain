@@ -9,11 +9,10 @@ const hasControls = true;
 interface YoutubeIFrameInterface {
   url: string;
   isPlaying: boolean;
-  lastSeekTime: Array<number>;
+  lastSeekTime: [number];
   playbackRate: number;
   handlePlay: (timestamp: number) => void;
   handlePause: (timestamp: number) => void;
-  handleProgress: (timestamp: number) => void;
 }
 
 function YoutubeIFrame({
@@ -23,9 +22,8 @@ function YoutubeIFrame({
   playbackRate,
   handlePlay,
   handlePause,
-  handleProgress,
 }: YoutubeIFrameInterface) {
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<ReactPlayer | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -39,7 +37,8 @@ function YoutubeIFrame({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const bufferPause = useCallback(
     debounce(() => {
-      handlePause(playerRef.current?.getCurrentTime());
+      playerRef.current?.getCurrentTime() &&
+        handlePause(playerRef.current?.getCurrentTime());
     }, 1000),
     [handlePause]
   );
@@ -54,30 +53,15 @@ function YoutubeIFrame({
 
   const onPlay = useCallback(() => {
     if (!isPlaying) {
-      handlePlay(playerRef.current?.getCurrentTime());
+      playerRef.current?.getCurrentTime() &&
+        handlePlay(playerRef.current?.getCurrentTime());
     }
   }, [isPlaying, handlePlay]);
 
-  const onProgress = useCallback(
-    ({
-      played,
-      playedSeconds,
-      loaded,
-      loadedSeconds,
-    }: {
-      played: number;
-      playedSeconds: number;
-      loaded: number;
-      loadedSeconds: number;
-    }) => {
-      handleProgress(playedSeconds);
-    },
-    [handleProgress]
-  );
-
   const onPause = useCallback(() => {
     if (isPlaying) {
-      handlePause(playerRef.current?.getCurrentTime());
+      playerRef.current?.getCurrentTime() &&
+        handlePause(playerRef.current?.getCurrentTime());
     }
   }, [isPlaying, handlePause]);
 
@@ -98,7 +82,6 @@ function YoutubeIFrame({
         onReady={onReady}
         onStart={onStart}
         onPlay={onPlay}
-        onProgress={onProgress}
         onPause={onPause}
         onBuffer={bufferPause}
         onBufferEnd={onBufferEnd}

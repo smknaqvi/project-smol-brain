@@ -11,16 +11,16 @@ import Button from '@material-ui/core/Button';
 
 interface DialogPropsInterface {
   closeFunction: () => void;
-  goToParty: (partyID: string, isNewParty: boolean) => void;
+  joinParty: (partyID: string) => void;
   isOpen: boolean;
 }
 
 function JoinPartyDialog({
   closeFunction,
-  goToParty,
+  joinParty,
   isOpen,
 }: DialogPropsInterface) {
-  const [partyID, setPartyID] = useState(' ');
+  const [partyID, setPartyID] = useState('');
 
   return (
     <Dialog
@@ -43,11 +43,11 @@ function JoinPartyDialog({
               </InputAdornment>
             ),
           }}
+          value={partyID}
           //https://stackoverflow.com/a/49427475
           onChange={(e) => setPartyID(e.target.value)}
           required
           autoFocus
-          margin="dense"
           id="partyID"
           label="Party ID"
           type="string"
@@ -62,7 +62,7 @@ function JoinPartyDialog({
           // https://stackoverflow.com/q/40881616
           type="submit" //set the buttom type is submit
           onClick={() => {
-            goToParty(partyID, false);
+            joinParty(partyID);
           }}
           color="primary"
           disabled={partyID.trim().length === 0}

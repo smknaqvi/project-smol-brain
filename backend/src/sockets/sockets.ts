@@ -1,32 +1,55 @@
-import { Server, Socket, Handshake } from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import { createAdapter } from 'socket.io-redis';
 import sharedSession from 'express-socket.io-session';
 import { RequestHandler } from 'express';
-import { get, exists, set, del } from '../app';
+import redisClient, { get, exists, set, del } from '../lib/redis';
+import { once } from 'lodash';
+import { verifyPassword } from '../lib/crypto';
 
-export const ioFunction = (io: Server, session: RequestHandler): void => {
+export const createSocketServerOnce = once((server, corsOptions, session) => {
+  const io = new Server(server, { cors: corsOptions });
+  ioFunction(io, session);
+  const pubClient = redisClient.duplicate();
+  const subClient = pubClient.duplicate();
+  io.adapter(createAdapter({ pubClient, subClient }));
+  return io;
+});
+
+const ioFunction = (io: Server, session: RequestHandler): void => {
   io.use(sharedSession(session));
 
-  io.on('connection', async (socket: Socket) => {
-    const session = (socket.handshake as any).session;
-    const username = session?.username;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    console.log('Username:', session?.username);
-    console.log(`Client ${socket.id} connected`);
+  io.use(async (socket, next) => {
+    const partyID = socket.handshake.query.partyID as string;
+    const password = socket.handshake.auth.password as string;
 
-    const partyID = socket.handshake.query['partyID'] as string;
     const roomExists = await exists(partyID);
-    if (!roomExists) {
-      console.log('invalid party id emitting');
-      io.to(socket.id).emit('invalid-party-id', 'Invalid');
-    } else {
-      const url = await get(partyID, 'current_url');
-      if (url) {
-        io.to(socket.id).emit('url', url);
-      }
-      //create new room and redirect, but check permissions
-      socket.join(partyID);
-      io.sockets.to(partyID).emit('new-connection', socket.id);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!roomExists || !(socket.handshake as any).session.username) {
+      console.log('test', roomExists);
+      const err = new Error('invalid partyID');
+      return next(err);
     }
+    const hashedPassword = (await get(partyID, 'password')) as string;
+    if (hashedPassword && !(await verifyPassword(password, hashedPassword))) {
+      const err = new Error('invalid room password');
+      return next(err);
+    }
+
+    return next();
+  });
+
+  io.on('connection', async (socket: Socket) => {
+    console.log(`Client ${socket.id} connected`);
+    const partyID = socket.handshake.query.partyID as string;
+
+    const url = await get(partyID, 'current_url');
+    if (url) {
+      io.to(socket.id).emit('url', url);
+    }
+    //create new room and redirect, but check permissions
+    socket.join(partyID);
+    io.sockets.to(partyID).emit('new-connection', socket.id);
 
     socket.on('play', (timestamp: number) => {
       console.log(`Client ${socket.id} plays ${timestamp}`);

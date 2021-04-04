@@ -36,14 +36,9 @@ export default function useAuth() {
     (username: string, password: string) => {
       return API.post('/auth/login', { username, password }).then((res) => {
         setUsername(username);
-        const state: any = history.location.state;
-        const partyRoute = state?.partyRoute;
-        console.log(partyRoute);
-        if (partyRoute) {
-          history.push(partyRoute);
-        } else {
-          history.replace('/');
-        }
+        const state = history.location.state as { partyRoute: string };
+        const partyRoute = state.partyRoute;
+        partyRoute ? history.push(partyRoute) : history.replace('/');
       });
     },
     [history]
