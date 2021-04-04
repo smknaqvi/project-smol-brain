@@ -26,7 +26,6 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!roomExists || !(socket.handshake as any).session.username) {
-      console.log('test', roomExists);
       const err = new Error('invalid partyID');
       return next(err);
     }
@@ -52,23 +51,19 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
     io.sockets.to(partyID).emit('new-connection', socket.id);
 
     socket.on('play', (timestamp: number) => {
-      console.log(`Client ${socket.id} plays ${timestamp}`);
       io.sockets.in(partyID).emit('play', timestamp);
     });
 
     socket.on('pause', (timestamp: number) => {
-      console.log(`Client ${socket.id} pause ${timestamp}`);
       io.sockets.in(partyID).emit('pause', timestamp);
     });
 
     socket.on('url', async (url: string) => {
-      console.log(`Client ${socket.id} set url to ${url}`);
       await set(partyID, 'current_url', url);
       io.sockets.in(partyID).emit('url', encodeURI(url));
     });
 
     socket.on('disconnect', async () => {
-      console.log('disconnecting');
       let numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
       if (!numParticipants) {
         const delay = 60000;

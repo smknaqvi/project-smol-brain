@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-console */
+/* eslint-disable no-restricted-globals */
 // https://medium.com/@toricpope/transform-a-react-app-into-a-progressive-web-app-pwa-dea336bd96e6
 var CACHE_NAME = 'pwa-task-manager';
 var urlsToCache = ['/', '/completed'];

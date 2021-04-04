@@ -55,6 +55,7 @@ mongoose.connect(dbURI as string, {
 
 const connection = mongoose.connection;
 connection.once('open', () => {
+  // eslint-disable-next-line no-console
   console.log('MongoDB Database connection successful!');
 });
 
@@ -63,5 +64,6 @@ app.use('/auth', rateLimiter, authRouter);
 app.use('/party', rateLimiter, partyRouter);
 
 server.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening at http://localhost:${port}`);
 });

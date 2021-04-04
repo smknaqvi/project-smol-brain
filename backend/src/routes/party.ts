@@ -7,7 +7,7 @@ import { hashPassword } from '../lib/crypto';
 const router = Router();
 
 /**
- * @api {get} /party/:id check if a party exists
+ * @api {get} /party/:id Check if a party exists
  * @apiName GetParty
  * @apiGroup Party
  * @apiDescription Check that a party exists and if it is password protected. Must have a valid session.
@@ -54,7 +54,11 @@ router.get('/:id', isLoggedIn, async (req: Request, res: Response) => {
  * @api {put} /party/new Generate a new party
  * @apiName PutPartyNew
  * @apiGroup Party
- * @apiDescription Creates a new party for users to join. Must have a valid session.
+ * @apiDescription Creates a new party for users to join. The party
+ * can be password protected if a non empty password string is given.
+ * Must have a valid session.
+ *
+ * @apiParam {String} password Room's password
  *
  * @apiSuccess {String} partyID String representing the party ID
  *

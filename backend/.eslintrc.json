@@ -18,7 +18,8 @@
         "endOfLine": "auto"
       }
     ],
-    "prefer-const": 2
+    "prefer-const": 2,
+    "no-console": 2
   },
   "ignorePatterns": ["node_modules", "dist"]
 }
