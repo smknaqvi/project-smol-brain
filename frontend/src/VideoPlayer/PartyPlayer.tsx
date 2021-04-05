@@ -75,7 +75,7 @@ function PartyPlayer({ partyID, password }: RTCPlayerWrapperProps) {
           }
         />
       </FormControl>
-      <Grid item xl={'auto'}>
+      <Grid item xl="auto">
         <YoutubeIFrame
           url={submittedURL}
           isPlaying={isPlaying}

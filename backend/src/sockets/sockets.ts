@@ -25,6 +25,7 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
 
     exists(partyID)
       .then((roomExists) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (!roomExists || !(socket.handshake as any).session.username) {
           const err = new Error('invalid partyID');
           return next(err);
@@ -66,7 +67,7 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
           io.to(socket.id).emit('url', url);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         io.to(socket.id).emit('error', INTERNAL_ERROR_MESSAGE);
       });
 
@@ -87,7 +88,7 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
         .then(() => {
           io.sockets.in(partyID).emit('url', encodeURI(url));
         })
-        .catch((err) => {
+        .catch(() => {
           io.to(socket.id).emit('error', INTERNAL_ERROR_MESSAGE);
         });
     });

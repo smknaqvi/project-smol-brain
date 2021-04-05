@@ -1,10 +1,9 @@
-import { Box } from '@material-ui/core';
+import { Box, withStyles } from '@material-ui/core';
 import createPage from '../createPage';
 import PartyPlayer from '../VideoPlayer/PartyPlayer';
 import InvalidPartyDialog from '../Dialogs/InvalidPartyDialog';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Button from '@material-ui/core/Button';
-import { withStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Snackbar } from '@material-ui/core';
 import Alert from '../Alert/Alert';
@@ -19,9 +18,8 @@ interface LocationState {
   password?: string;
 }
 
-const ClipboardToolTip = withStyles((theme: Theme) => ({
+const ClipboardToolTip = withStyles(() => ({
   tooltip: {
-    boxShadow: theme.shadows[1],
     fontSize: 15,
   },
 }))(Tooltip);
@@ -100,15 +98,18 @@ function PartyPage() {
   return (
     <Box>
       <InvalidPartyDialog isOpen={isInvalidID} />
-      <ClipboardToolTip title="Copy to clipboard" placement="bottom">
-        <Button
-          onClick={copyToClipboard}
-          variant="outlined"
-          endIcon={<FileCopyIcon />}
-        >
-          {partyID}
-        </Button>
-      </ClipboardToolTip>
+      <Box display="flex" justifyContent="space-between" marginBottom="10px">
+        <ClipboardToolTip title="Copy to clipboard" placement="right">
+          <Button
+            onClick={copyToClipboard}
+            variant="outlined"
+            endIcon={<FileCopyIcon />}
+          >
+            {partyID}
+          </Button>
+        </ClipboardToolTip>
+      </Box>
+      <PartyPlayer password={password} partyID={partyID} />
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -118,7 +119,6 @@ function PartyPage() {
           Copied to Clipboard
         </Alert>
       </Snackbar>
-      <PartyPlayer password={password} partyID={partyID} />
     </Box>
   );
 }

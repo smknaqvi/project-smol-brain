@@ -85,6 +85,7 @@ function LoginPage() {
               id="username"
               label="Username"
               variant="outlined"
+              disabled={isLoading}
               fullWidth={true}
             />
             <TextField
@@ -95,6 +96,7 @@ function LoginPage() {
               type="password"
               label="Password"
               variant="outlined"
+              disabled={isLoading}
               fullWidth={true}
             />
             <LoadingButton

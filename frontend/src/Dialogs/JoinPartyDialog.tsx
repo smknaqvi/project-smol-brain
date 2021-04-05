@@ -32,8 +32,7 @@ function JoinPartyDialog({
       <DialogContent>
         <DialogContentText>
           Please enter your unique party ID below. This should be in the form of
-          a long string of letters and characters. If you don't have a party ID,
-          ask a member of the party to share it with you.
+          a long string of letters and characters.
         </DialogContentText>
         <TextField
           InputProps={{

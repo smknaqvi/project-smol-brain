@@ -86,8 +86,8 @@ function YoutubeIFrame({
         onBuffer={bufferPause}
         onBufferEnd={onBufferEnd}
         muted={true}
-        height="360px"
-        width="640px"
+        height="53.5vmin"
+        width="95vmin"
       />
     </div>
   );

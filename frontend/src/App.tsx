@@ -36,7 +36,7 @@ function App() {
           <LandingPage />
         </PrivateRoute>
         <Route>
-          <InvalidRoutePage></InvalidRoutePage>
+          <InvalidRoutePage />
         </Route>
       </Switch>
       <Snackbar

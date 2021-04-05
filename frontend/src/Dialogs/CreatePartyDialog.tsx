@@ -20,43 +20,39 @@ function CreatePartyDialog({
 }: DialogPropsInterface) {
   const [password, setPassword] = useState('');
   return (
-    <div>
-      <Dialog
-        open={isOpen}
-        onClose={closeFunction}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Create a party</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            When you hit Create, you'll be taken to a room with a unique Party
-            ID. Copy it to your clipboard and keep it somewhere safe. This is
-            what you'll use to invite others to your party. (It'll also be in
-            the URL of your room).
-          </DialogContentText>
-          <TextField
-            label="Room Password (Optional)"
-            value={password}
-            onChange={({ target: { value } }) => setPassword(value)}
-            type="password"
-            fullWidth={true}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeFunction} color="primary">
-            Cancel
-          </Button>
-          <Button
-            // https://stackoverflow.com/q/40881616
-            type="submit" //set the buttom type is submit
-            onClick={() => createParty(password)}
-            color="primary"
-          >
-            Create
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={isOpen}
+      onClose={closeFunction}
+      aria-labelledby="form-dialog-title"
+    >
+      <DialogTitle id="form-dialog-title">Create a party</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Click create to create a new room and join it. Once created you will
+          be given a room id.
+        </DialogContentText>
+        <TextField
+          label="Room Password (Optional)"
+          value={password}
+          onChange={({ target: { value } }) => setPassword(value)}
+          type="password"
+          fullWidth={true}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeFunction} color="primary">
+          Cancel
+        </Button>
+        <Button
+          // https://stackoverflow.com/q/40881616
+          type="submit" //set the buttom type is submit
+          onClick={() => createParty(password)}
+          color="primary"
+        >
+          Create
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 

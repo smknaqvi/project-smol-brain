@@ -117,6 +117,7 @@ function SignupPage() {
               type="password"
               label="Password"
               variant="outlined"
+              disabled={isLoading}
               fullWidth={true}
             />
             <TextField
@@ -127,6 +128,7 @@ function SignupPage() {
               type="password"
               label="Confirm Password"
               variant="outlined"
+              disabled={isLoading}
               fullWidth={true}
             />
             <LoadingButton

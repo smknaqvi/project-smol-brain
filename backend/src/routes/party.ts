@@ -56,14 +56,14 @@ router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
             const hasPassword = !!password;
             return res.status(200).json({ message: 'Valid', hasPassword });
           })
-          .catch((err) => {
+          .catch(() => {
             return res.status(500).json(INTERNAL_ERROR_MESSAGE);
           });
       } else {
         return res.status(404).json({ error: 'Invalid' });
       }
     })
-    .catch((err) => {
+    .catch(() => {
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);
     });
 });
@@ -135,7 +135,7 @@ router.put('/new', isLoggedIn, (req: Request, res: Response) => {
         );
       }
     })
-    .catch((err) => {
+    .catch(() => {
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);
     });
 });
