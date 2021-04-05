@@ -40,7 +40,7 @@ const router = Router();
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Conflict
+ *     HTTP/1.1 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }
@@ -133,7 +133,7 @@ router.post('/signup', (req: Request, res: Response) => {
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Conflict
+ *     HTTP/1.1 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }
@@ -191,7 +191,7 @@ router.post('/login', (req: Request, res: Response) => {
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Conflict
+ *     HTTP/1.1 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }

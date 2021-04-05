@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { isLoggedIn } from '../middleware/auth';
 import { set, exists, get } from '../lib/redis';
 import { hashPassword } from '../lib/crypto';
+import { INTERNAL_ERROR_MESSAGE } from '../constants';
 
 const router = Router();
 
@@ -36,18 +37,35 @@ const router = Router();
  *     {
  *       "error": "Access Denied"
  *     }
+ * @apiError (Error 5xx) {String} error Error message
+ *
+ * @apiErrorExample Internal Server Error:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "error": "Internal Server Error"
+ *     }
  */
 
-router.get('/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
   const partyID: string = req.params.id;
-  const isValid = await exists(partyID);
-
-  if (isValid) {
-    const hasPassword = !!(await get(partyID, 'password'));
-    return res.status(200).json({ message: 'Valid', hasPassword });
-  } else {
-    return res.status(404).json({ error: 'Invalid' });
-  }
+  exists(partyID)
+    .then((isValid) => {
+      if (isValid) {
+        get(partyID, 'password')
+          .then((password) => {
+            const hasPassword = !!password;
+            return res.status(200).json({ message: 'Valid', hasPassword });
+          })
+          .catch((err) => {
+            return res.status(500).json(INTERNAL_ERROR_MESSAGE);
+          });
+      } else {
+        return res.status(404).json({ error: 'Invalid' });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).json(INTERNAL_ERROR_MESSAGE);
+    });
 });
 
 /**
@@ -75,25 +93,51 @@ router.get('/:id', isLoggedIn, async (req: Request, res: Response) => {
  *     {
  *       "error": "Access Denied"
  *     }
+ *
+ * @apiError (Error 5xx) {String} error Error message
+ *
+ * @apiErrorExample Internal Server Error:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "error": "Internal Server Error"
+ *     }
  */
 
-router.put('/new', isLoggedIn, async (req: Request, res: Response) => {
-  const password = req.body.password;
+const genPartyID: () => Promise<string> = () => {
+  const partyID = uuidv4();
+  return exists(partyID).then((exists) => {
+    if (exists) return genPartyID();
+    else return partyID;
+  });
+};
 
-  let partyIDexists = true;
-  let partyID = '';
-  while (partyIDexists) {
-    partyID = uuidv4();
-    if (!(await exists(partyID))) {
-      partyIDexists = false;
-    }
-  }
-
-  if (password) {
-    await set(partyID, 'password', await hashPassword(password));
-  }
-  await set(partyID, 'created_at', JSON.stringify(new Date()));
-  res.json({ partyID });
+router.put('/new', isLoggedIn, (req: Request, res: Response) => {
+  genPartyID().then;
+  genPartyID()
+    .then((partyID) => {
+      const password = req.body.password;
+      if (password) {
+        return hashPassword(password)
+          .then((hashedPassword) => {
+            return set(partyID, 'password', hashedPassword);
+          })
+          .then(() => {
+            return set(partyID, 'created_at', JSON.stringify(new Date()));
+          })
+          .then(() => {
+            return res.status(200).json({ partyID });
+          });
+      } else {
+        return set(partyID, 'created_at', JSON.stringify(new Date())).then(
+          () => {
+            return res.status(200).json({ partyID });
+          }
+        );
+      }
+    })
+    .catch((err) => {
+      return res.status(500).json(INTERNAL_ERROR_MESSAGE);
+    });
 });
 
 export default router;

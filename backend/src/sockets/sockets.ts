@@ -5,6 +5,7 @@ import { RequestHandler } from 'express';
 import redisClient, { get, exists, set, del } from '../lib/redis';
 import { once } from 'lodash';
 import { verifyPassword } from '../lib/crypto';
+import { INTERNAL_ERROR_MESSAGE } from '../constants';
 
 export const createSocketServerOnce = once((server, corsOptions, session) => {
   const io = new Server(server, { cors: corsOptions });
@@ -18,34 +19,57 @@ export const createSocketServerOnce = once((server, corsOptions, session) => {
 const ioFunction = (io: Server, session: RequestHandler): void => {
   io.use(sharedSession(session));
 
-  io.use(async (socket, next) => {
+  io.use((socket, next) => {
     const partyID = socket.handshake.query.partyID as string;
     const password = socket.handshake.auth.password as string;
 
-    const roomExists = await exists(partyID);
+    exists(partyID)
+      .then((roomExists) => {
+        if (!roomExists || !(socket.handshake as any).session.username) {
+          const err = new Error('invalid partyID');
+          return next(err);
+        }
+      })
+      .catch((err) => {
+        return next(err);
+      });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (!roomExists || !(socket.handshake as any).session.username) {
-      const err = new Error('invalid partyID');
-      return next(err);
-    }
-    const hashedPassword = (await get(partyID, 'password')) as string;
-    if (hashedPassword && !(await verifyPassword(password, hashedPassword))) {
-      const err = new Error('invalid room password');
-      return next(err);
-    }
-
-    return next();
+    get(partyID, 'password')
+      .then((roomPassword) => {
+        if (roomPassword) {
+          verifyPassword(password, roomPassword as string).then(
+            (isValidPassword) => {
+              if (isValidPassword) {
+                return next();
+              } else {
+                const err = new Error('invalid room password');
+                return next(err);
+              }
+            }
+          );
+        } else {
+          return next();
+        }
+      })
+      .catch((err) => {
+        return next(err);
+      });
   });
 
-  io.on('connection', async (socket: Socket) => {
+  io.on('connection', (socket: Socket) => {
     console.log(`Client ${socket.id} connected`);
     const partyID = socket.handshake.query.partyID as string;
 
-    const url = await get(partyID, 'current_url');
-    if (url) {
-      io.to(socket.id).emit('url', url);
-    }
+    get(partyID, 'current_url')
+      .then((url) => {
+        if (url) {
+          io.to(socket.id).emit('url', url);
+        }
+      })
+      .catch((err) => {
+        io.to(socket.id).emit('error', INTERNAL_ERROR_MESSAGE);
+      });
+
     //create new room and redirect, but check permissions
     socket.join(partyID);
     io.sockets.to(partyID).emit('new-connection', socket.id);
@@ -58,12 +82,17 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
       io.sockets.in(partyID).emit('pause', timestamp);
     });
 
-    socket.on('url', async (url: string) => {
-      await set(partyID, 'current_url', url);
-      io.sockets.in(partyID).emit('url', encodeURI(url));
+    socket.on('url', (url: string) => {
+      set(partyID, 'current_url', url)
+        .then(() => {
+          io.sockets.in(partyID).emit('url', encodeURI(url));
+        })
+        .catch((err) => {
+          io.to(socket.id).emit('error', INTERNAL_ERROR_MESSAGE);
+        });
     });
 
-    socket.on('disconnect', async () => {
+    socket.on('disconnect', () => {
       let numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
       if (!numParticipants) {
         const delay = 60000;
