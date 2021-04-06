@@ -112,7 +112,6 @@ const genPartyID: () => Promise<string> = () => {
 };
 
 router.put('/new', isLoggedIn, (req: Request, res: Response) => {
-  genPartyID().then;
   genPartyID()
     .then((partyID) => {
       const password = req.body.password;

@@ -6,17 +6,20 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { TextField } from '@material-ui/core';
 import { useState } from 'react';
+import LoadingButton from '../LoadingComponents/LoadingButton';
 
 interface DialogPropsInterface {
   closeFunction: () => void;
   createParty: (password: string) => void;
   isOpen: boolean;
+  isLoading: boolean;
 }
 
 function CreatePartyDialog({
   closeFunction,
   createParty,
   isOpen,
+  isLoading,
 }: DialogPropsInterface) {
   const [password, setPassword] = useState('');
   return (
@@ -43,14 +46,15 @@ function CreatePartyDialog({
         <Button onClick={closeFunction} color="primary">
           Cancel
         </Button>
-        <Button
+        <LoadingButton
+          loading={isLoading}
           // https://stackoverflow.com/q/40881616
           type="submit" //set the buttom type is submit
           onClick={() => createParty(password)}
           color="primary"
         >
           Create
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

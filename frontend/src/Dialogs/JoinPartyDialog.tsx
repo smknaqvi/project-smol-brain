@@ -8,17 +8,20 @@ import { useState } from 'react';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
+import LoadingButton from '../LoadingComponents/LoadingButton';
 
 interface DialogPropsInterface {
   closeFunction: () => void;
   joinParty: (partyID: string) => void;
   isOpen: boolean;
+  isLoading: boolean;
 }
 
 function JoinPartyDialog({
   closeFunction,
   joinParty,
   isOpen,
+  isLoading,
 }: DialogPropsInterface) {
   const [partyID, setPartyID] = useState('');
 
@@ -57,7 +60,8 @@ function JoinPartyDialog({
         <Button onClick={closeFunction} color="primary">
           Cancel
         </Button>
-        <Button
+        <LoadingButton
+          loading={isLoading}
           // https://stackoverflow.com/q/40881616
           type="submit" //set the buttom type is submit
           onClick={() => {
@@ -67,7 +71,7 @@ function JoinPartyDialog({
           disabled={partyID.trim().length === 0}
         >
           Join
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

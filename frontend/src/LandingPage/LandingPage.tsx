@@ -25,6 +25,7 @@ function LandingPage() {
   // https://material-ui.com/components/dialogs/
   const [joinDialogOpen, setJoinDialogOpen] = useState(false);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const history = useHistory();
   const { setError } = useAppState();
@@ -46,6 +47,7 @@ function LandingPage() {
 
   const createParty = useCallback(
     (password = '') => {
+      setIsLoading(true);
       API.put(`/party/new`, { password })
         .then((res) => {
           const partyID = res.data.partyID;
@@ -54,12 +56,19 @@ function LandingPage() {
             state: {
               isValidated: true,
               hasPassword: res.data.hasPassword,
-              password: password || undefined
-            }
+              password: password || undefined,
+            },
           });
         })
         .catch(() => {
-          setError(new Error('Specified Party ID Does not Exist'));
+          setError(
+            new Error(
+              'Something went wrong on our end, could not create party.'
+            )
+          );
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [history, setError]
@@ -67,18 +76,22 @@ function LandingPage() {
 
   const joinParty = useCallback(
     (partyID: string) => {
+      setIsLoading(true);
       API.get(`/party/${partyID}`)
         .then((res) => {
           history.push({
             pathname: `/party/${partyID}`,
             state: {
               isValidated: true,
-              hasPassword: res.data.hasPassword
-            }
+              hasPassword: res.data.hasPassword,
+            },
           });
         })
         .catch(() => {
           setError(new Error('Invalid Party ID or Room Password'));
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [history, setError]
@@ -96,11 +109,13 @@ function LandingPage() {
         isOpen={joinDialogOpen}
         closeFunction={handleJoinDialogClose}
         joinParty={joinParty}
+        isLoading={isLoading}
       />
       <CreatePartyDialog
         isOpen={createDialogOpen}
         closeFunction={handleCreateDialogClose}
         createParty={createParty}
+        isLoading={isLoading}
       />
       <img src={logo} alt="Logo" />
       <ButtonGroup
