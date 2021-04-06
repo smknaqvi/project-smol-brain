@@ -73,7 +73,12 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
 
     //create new room and redirect, but check permissions
     socket.join(partyID);
+
     io.sockets.to(partyID).emit('new-connection', socket.id);
+
+    io.sockets
+      .to(socket.id)
+      .emit('set-num-users', io.sockets.adapter.rooms.get(partyID)?.size);
 
     socket.on('play', (timestamp: number) => {
       io.sockets.in(partyID).emit('play', timestamp);
@@ -94,6 +99,7 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
     });
 
     socket.on('disconnect', () => {
+      io.sockets.to(partyID).emit('new-disconnect');
       let numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
       if (!numParticipants) {
         const delay = 60000;

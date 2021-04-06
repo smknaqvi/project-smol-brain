@@ -2,7 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import useSocket from './useSocket';
 import { useHistory } from 'react-router-dom';
 
-export default function usePlayerConnection(partyID: string, password: string) {
+export default function usePlayerConnection(
+  partyID: string,
+  password: string,
+  eventHandler: (event: string, ...args: any[]) => void
+) {
   const history = useHistory();
 
   const socket = useSocket(partyID, password);
@@ -12,6 +16,7 @@ export default function usePlayerConnection(partyID: string, password: string) {
   const [notice, setNotice] = useState('');
 
   useEffect(() => {
+    socket.onAny(eventHandler);
     socket.on('new-connection', (socketID: string) => {
       if (socket.id !== socketID) {
         setNotice('New user joined! Video paused.');
@@ -35,7 +40,7 @@ export default function usePlayerConnection(partyID: string, password: string) {
     socket.on('url', (url: string) => {
       setSubmittedURL(url);
     });
-  }, [socket, history]);
+  }, [socket, history, eventHandler]);
 
   const handlePlay = useCallback(
     (timestamp: number): void => {

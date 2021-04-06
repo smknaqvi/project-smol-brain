@@ -34,6 +34,7 @@ function PartyPage() {
   const [password, setPassword] = useState(locationState?.password || '');
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
   const [isInvalidID, setIsInvalidID] = useState(false);
+  const [numUsers, setNumUsers] = useState(0);
 
   useEffect(() => {
     if (!isValidated) {
@@ -95,6 +96,20 @@ function PartyPage() {
     );
   }
 
+  const handleSocketEvent = (event: string, ...args: any[]) => {
+    switch (event) {
+      case 'new-connection':
+        setNumUsers(numUsers + 1);
+        break;
+      case 'new-disconnect':
+        setNumUsers(numUsers - 1);
+        break;
+      case 'set-num-users':
+        setNumUsers(args[0]);
+        break;
+    }
+  };
+
   return (
     <Box>
       <InvalidPartyDialog isOpen={isInvalidID} />
@@ -108,8 +123,13 @@ function PartyPage() {
             {partyID}
           </Button>
         </ClipboardToolTip>
+        {`Party Size: ${numUsers}`}
       </Box>
-      <PartyPlayer password={password} partyID={partyID} />
+      <PartyPlayer
+        password={password}
+        partyID={partyID}
+        handleEvent={handleSocketEvent}
+      />
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

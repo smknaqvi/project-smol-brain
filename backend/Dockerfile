@@ -1,13 +1,17 @@
-FROM node:latest
+FROM node:lts
 
 WORKDIR /app
 
-COPY . .
+COPY package.json package-lock.json /app/
 
 RUN npm install
 
-EXPOSE 5000
+COPY src /app/src
+
+COPY tsconfig.json apidoc.json /app/
 
 RUN npm run build
+
+EXPOSE 5000
 
 ENTRYPOINT ["node", "dist/app.js"]
