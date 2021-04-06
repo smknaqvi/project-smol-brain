@@ -10,9 +10,25 @@ import LandingPage from './LandingPage/LandingPage';
 import PartyPage from './PartyPage/PartyPage';
 import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 import InvalidRoutePage from './InvalidRoute/InvalidRoutePage';
+import CreditsPage from './CreditsPage/CreditsPage';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    creditsLink: {
+      color: 'white',
+    },
+    creditsLinkContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      margin: '5px',
+    },
+  })
+);
 
 function App() {
   const { error, setError } = useAppState();
+  const classes = useStyles();
 
   return (
     <Box display="flex" flexDirection="column">
@@ -28,6 +44,9 @@ function App() {
         </Route>
         <Route path="/logout" exact>
           <LogoutPage />
+        </Route>
+        <Route path="/credits" exact>
+          <CreditsPage />
         </Route>
         <PrivateRoute path="/party/:id">
           <PartyPage />
@@ -48,6 +67,11 @@ function App() {
           {error?.message}
         </Alert>
       </Snackbar>
+      <div className={classes.creditsLinkContainer}>
+        <a className={classes.creditsLink} href="/credits">
+          Credits
+        </a>
+      </div>
     </Box>
   );
 }
