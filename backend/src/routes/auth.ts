@@ -18,7 +18,7 @@ const router = Router();
  * @apiSuccess {String} message Success message
  *
  * @apiSuccessExample Success Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/2 200 OK
  *     {
  *       "message": "User John signed up successfully",
  *     }
@@ -26,21 +26,27 @@ const router = Router();
  * @apiError {String} error Error message
  *
  * @apiErrorExample Bad Request:
- *     HTTP/1.1 400 Bad Request
+ *     HTTP/2 400 Bad Request
  *     {
  *       "error": "Missing username or password"
  *     }
  *
  * @apiErrorExample Conflict:
- *     HTTP/1.1 409 Conflict
+ *     HTTP/2 409 Conflict
  *     {
  *       "error": "User with username John already exists"
  *     }
  *
+ * @apiError (Error 429) {String} _ Too Many Requests
+ *
+ * @apiErrorExample Too Many Requests:
+ *     HTTP/2 429 Too Many Requests
+ *     Too Many Requests
+ *
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Internal Server Error
+ *     HTTP/2 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }
@@ -105,13 +111,13 @@ router.post('/signup', (req: Request, res: Response) => {
  * @apiSuccess {String} message Success message
  *
  * @apiSuccessExample Success Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/2 200 OK
  *     {
  *       "message": "User John logged in successfully",
  *     }
  *
  * @apiSuccessExample Already Logged In:
- *     HTTP/1.1 200 OK
+ *     HTTP/2 200 OK
  *     {
  *       "message": "User already logged in",
  *     }
@@ -119,21 +125,27 @@ router.post('/signup', (req: Request, res: Response) => {
  * @apiError {String} error Error message
  *
  * @apiErrorExample Bad Request:
- *     HTTP/1.1 400 Bad Request
+ *     HTTP/2 400 Bad Request
  *     {
  *       "error": "Missing username or password"
  *     }
  *
  * @apiErrorExample Unauthorized:
- *     HTTP/1.1 401 Unauthorized
+ *     HTTP/2 401 Unauthorized
  *     {
  *       "error": "Access Denied"
  *     }
  *
+ * @apiError (Error 429) {String} _ Too Many Requests
+ *
+ * @apiErrorExample Too Many Requests:
+ *     HTTP/2 429 Too Many Requests
+ *     Too Many Requests
+ *
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Internal Server Error
+ *     HTTP/2 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }
@@ -183,15 +195,21 @@ router.post('/login', (req: Request, res: Response) => {
  * @apiSuccess {String} message Success message
  *
  * @apiSuccessExample Success Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/2 200 OK
  *     {
  *       "message": "Logged out successfully",
  *     }
  *
+ * @apiError (Error 429) {String} _ Too Many Requests
+ *
+ * @apiErrorExample Too Many Requests:
+ *     HTTP/2 429 Too Many Requests
+ *     Too Many Requests
+ *
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Internal Server Error
+ *     HTTP/2 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }

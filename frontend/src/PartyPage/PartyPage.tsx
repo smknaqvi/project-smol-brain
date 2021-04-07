@@ -68,16 +68,6 @@ function PartyPage() {
     navigator.clipboard.writeText(partyID);
     setSnackbarOpen(true);
   };
-  //https://material-ui.com/components/snackbars/#snackbar
-  const handleSnackbarClose = (
-    event?: React.SyntheticEvent,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
 
   if (!isValidated) {
     return <p>Loading</p>;
@@ -133,9 +123,9 @@ function PartyPage() {
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
-        onClose={handleSnackbarClose}
+        onClose={() => setSnackbarOpen(false)}
       >
-        <Alert onClose={handleSnackbarClose} severity="success">
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
           Copied to Clipboard
         </Alert>
       </Snackbar>

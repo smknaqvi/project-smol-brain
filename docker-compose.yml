@@ -15,7 +15,7 @@ services:
 
   redis:
     container_name: ytparty-redis
-    image: redis:latest
+    image: redis:alpine
     ports:
       - 127.0.0.1:6379:6379
     restart: unless-stopped

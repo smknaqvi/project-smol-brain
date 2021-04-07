@@ -21,7 +21,7 @@ const useStyles = makeStyles(() =>
     creditsLinkContainer: {
       display: 'flex',
       justifyContent: 'flex-end',
-      margin: '5px',
+      margin: '15px',
     },
   })
 );

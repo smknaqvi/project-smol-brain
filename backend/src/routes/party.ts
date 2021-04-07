@@ -18,7 +18,7 @@ const router = Router();
  * @apiSuccess {String} message Success message
  *
  * @apiSuccessExample Success Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/2 200 OK
  *     {
  *       "message": "Valid",
  *       "hasPassword": true
@@ -27,20 +27,27 @@ const router = Router();
  * @apiError {String} error Error message
  *
  * @apiErrorExample Not Found:
- *     HTTP/1.1 404 Not Found
+ *     HTTP/2 404 Not Found
  *     {
  *       "error": "Invalid"
  *     }
  *
  * @apiErrorExample Unauthorized:
- *     HTTP/1.1 401 Unauthorized
+ *     HTTP/2 401 Unauthorized
  *     {
  *       "error": "Access Denied"
  *     }
+ *
+ * @apiError (Error 429) {String} _ Too Many Requests
+ *
+ * @apiErrorExample Too Many Requests:
+ *     HTTP/2 429 Too Many Requests
+ *     Too Many Requests
+ *
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Internal Server Error
+ *     HTTP/2 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }
@@ -81,7 +88,7 @@ router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
  * @apiSuccess {String} partyID String representing the party ID
  *
  * @apiSuccessExample Success Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/2 200 OK
  *     {
  *       "partyID": "92af0737-3515-4938-aa66-c768a270fec5",
  *     }
@@ -89,15 +96,21 @@ router.get('/:id', isLoggedIn, (req: Request, res: Response) => {
  * @apiError {String} error Error message
  *
  * @apiErrorExample Unauthorized:
- *     HTTP/1.1 401 Unauthorized
+ *     HTTP/2 401 Unauthorized
  *     {
  *       "error": "Access Denied"
  *     }
  *
+ * @apiError (Error 429) {String} _ Too Many Requests
+ *
+ * @apiErrorExample Too Many Requests:
+ *     HTTP/2 429 Too Many Requests
+ *     Too Many Requests
+ *
  * @apiError (Error 5xx) {String} error Error message
  *
  * @apiErrorExample Internal Server Error:
- *     HTTP/1.1 500 Internal Server Error
+ *     HTTP/2 500 Internal Server Error
  *     {
  *       "error": "Internal Server Error"
  *     }
