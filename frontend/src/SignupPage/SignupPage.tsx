@@ -28,6 +28,12 @@ function SignupPage() {
       setUsernameErrorMessage('Username cannot be empty');
       setShowUsernameError(true);
       errors = true;
+    } else if (username.length < 3 || username.length > 20) {
+      setUsernameErrorMessage(
+        'Username must be between 3 and 20 characters long'
+      );
+      setShowUsernameError(true);
+      errors = true;
     }
     if (!password) {
       setPasswordErrorMessage('Password cannot be empty');

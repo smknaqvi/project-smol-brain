@@ -58,7 +58,8 @@ router.post('/signup', (req: Request, res: Response) => {
   if (!username || !password) {
     return res.status(400).json({ error: 'Missing username or password' });
   }
-  User.findOne({ username }, (err: mongoose.Error, user: typeof User) => {
+  const usernameLower = (username as string).toLowerCase();
+  User.findOne({ usernameLower }, (err: mongoose.Error, user: typeof User) => {
     if (err) {
       console.error(err);
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);
@@ -72,8 +73,8 @@ router.post('/signup', (req: Request, res: Response) => {
       .then((hashedPassword) => {
         const newUser = new User({
           username,
+          usernameLower,
           hashedPassword,
-          friends: [],
         });
         newUser
           .save()
@@ -160,7 +161,8 @@ router.post('/login', (req: Request, res: Response) => {
   if (!username || !password) {
     return res.status(400).json({ error: 'Missing username or password' });
   }
-  User.findOne({ username }, (err: mongoose.Error, user: UserDocument) => {
+  const usernameLower = (username as string).toLowerCase();
+  User.findOne({ usernameLower }, (err: mongoose.Error, user: UserDocument) => {
     if (err) {
       console.error(err);
       return res.status(500).json(INTERNAL_ERROR_MESSAGE);

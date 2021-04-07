@@ -10,13 +10,19 @@ const userSchema = new Schema(
       minlength: 3,
       maxlength: 20,
     },
+    usernameLower: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      minlength: 3,
+      maxlength: 20,
+    },
     hashedPassword: {
       type: String,
       required: true,
       unique: false,
       trim: false,
-      minlength: 12,
-      maxlength: 256,
     },
     friends: {
       type: [String],
