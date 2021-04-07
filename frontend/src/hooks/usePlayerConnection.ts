@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import useSocket from './useSocket';
 import { useHistory } from 'react-router-dom';
+import { useParty } from '../PartyPage/PartyContextProvider';
 
 export default function usePlayerConnection(
-  partyID: string,
-  password: string,
   eventHandler: (event: string, ...args: any[]) => void
 ) {
   const history = useHistory();
 
-  const socket = useSocket(partyID, password);
+  const { socket } = useParty();
   const [submittedURL, setSubmittedURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [lastSeekTime, setLastSeekTime] = useState<[number]>([0]);

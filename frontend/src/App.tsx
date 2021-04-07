@@ -12,6 +12,7 @@ import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 import InvalidRoutePage from './InvalidRoute/InvalidRoutePage';
 import CreditsPage from './CreditsPage/CreditsPage';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import WithPasswordPartyPage from './PartyPage/WithPasswordPartyPage';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -49,7 +50,9 @@ function App() {
           <CreditsPage />
         </Route>
         <PrivateRoute path="/party/:id">
-          <PartyPage />
+          <WithPasswordPartyPage>
+            <PartyPage />
+          </WithPasswordPartyPage>
         </PrivateRoute>
         <PrivateRoute path="/" exact>
           <LandingPage />

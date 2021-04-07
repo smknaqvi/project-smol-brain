@@ -22,16 +22,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface RTCPlayerWrapperProps {
-  partyID: string;
-  password: string;
   handleEvent: (event: string, ...args: any[]) => void;
 }
 
-function PartyPlayer({
-  partyID,
-  password,
-  handleEvent,
-}: RTCPlayerWrapperProps) {
+function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
   const [youtubeURL, setYoutubeURL] = useState('');
 
   const classes = useStyles();
@@ -45,7 +39,7 @@ function PartyPlayer({
     handlePause,
     handleSetURL,
     handleSetNotice,
-  } = usePlayerConnection(partyID, password, handleEvent);
+  } = usePlayerConnection(handleEvent);
 
   return (
     <Grid
