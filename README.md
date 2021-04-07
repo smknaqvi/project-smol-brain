@@ -24,11 +24,11 @@ Note: this can be used for development as well if you skip the steps labelled (P
 
    `cp ./frontend/.env.docker.example ./frontend/.env && cp ./backend/.env.docker.example ./backend/.env`
 
-1. (Prod) Change the password for redis in both `docker-compose.yml` as well as `./backend/.env`
+1. (Prod) Change the password for mongo in both `docker-compose.yml` as well as `./backend/.env`
 
 1. (Prod) Change the `SESSION_SECRET` in `./backend/.env` to something random and complex
 
-1. (Prod) Change the `FRONTEND_ORIGIN` and `ROOT_DOMAIN` to match your domain in `./backend/.env`.
+1. (Prod) Change the `FRONTEND_ORIGIN` and `ROOT_DOMAIN` to match your domain that your frontend is hosted on in `./backend/.env`.
 
    > Ex: an app hosted at https://ytparty.ml would have `FRONTEND_ORIGIN=https://ytparty.ml` and `ROOT_DOMAIN=ytparty.ml`
 
