@@ -11,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import usePlayerConnection from '../hooks/usePlayerConnection';
+import { Box } from '@material-ui/core';
+import Chat from '../Chat/Chat';
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -18,6 +20,21 @@ const useStyles = makeStyles(() => ({
   },
   helperText: {
     margin: '0 1%',
+  },
+
+  videoChatContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chat: {
+    padding: '5px',
+    margin: '10px',
+    width: '40vh',
+    border: '1px solid white',
+    borderRadius: '20px',
   },
 }));
 
@@ -74,7 +91,7 @@ function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
           }
         />
       </FormControl>
-      <Grid item xl="auto">
+      <Box className={classes.videoChatContainer}>
         <YoutubeIFrame
           url={submittedURL}
           isPlaying={isPlaying}
@@ -83,7 +100,11 @@ function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
           handlePlay={handlePlay}
           handlePause={handlePause}
         />
-      </Grid>
+        <div className={classes.chat}>
+          <Chat />
+        </div>
+      </Box>
+
       <Snackbar
         open={!!notice}
         autoHideDuration={6000}

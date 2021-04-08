@@ -16,6 +16,11 @@ export const createSocketServerOnce = once((server, corsOptions, session) => {
   return io;
 });
 
+interface MessagePropsInterface {
+  message: string;
+  username: string;
+}
+
 const ioFunction = (io: Server, session: RequestHandler): void => {
   io.use(sharedSession(session));
 
@@ -75,14 +80,26 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
     socket.join(partyID);
 
     io.sockets.to(partyID).emit('new-connection', socket.id);
-
+    const username = (socket.handshake as any).session.username;
     io.sockets
-      .to(socket.id)
+      .in(partyID)
+      .emit('new-user', 'User ' + username + ' has joined the party!');
+    io.sockets
+      .to(partyID)
       .emit('set-num-users', io.sockets.adapter.rooms.get(partyID)?.size);
 
     socket.on('play', (timestamp: number) => {
       io.sockets.in(partyID).emit('play', timestamp);
     });
+
+    socket.on(
+      'new-message-client',
+      async (messageProps: MessagePropsInterface) => {
+        const message = messageProps.message;
+        const username = messageProps.username;
+        io.sockets.in(partyID).emit('new-message', { message, username });
+      }
+    );
 
     socket.on('pause', (timestamp: number) => {
       io.sockets.in(partyID).emit('pause', timestamp);
@@ -99,7 +116,9 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
     });
 
     socket.on('disconnect', () => {
-      io.sockets.to(partyID).emit('new-disconnect');
+      io.sockets
+        .to(partyID)
+        .emit('set-num-users', io.sockets.adapter.rooms.get(partyID)?.size);
       let numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
       if (!numParticipants) {
         const delay = 60000;

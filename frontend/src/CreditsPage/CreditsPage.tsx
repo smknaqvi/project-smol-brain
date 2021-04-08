@@ -20,6 +20,17 @@ function CreditsPage() {
             <li>https://stackoverflow.com/a/62335120</li>
             <li>https://stackoverflow.com/q/40881616</li>
             <li>https://stackoverflow.com/a/49427475</li>
+            <li>https://stackoverflow.com/a/59066345</li>
+            <li>
+              https://stackoverflow.com/questions/37620694/how-to-scroll-to-bottom-in-react
+            </li>
+            <li>
+              https://stackoverflow.com/questions/11039885/scrollintoview-causing-the-whole-page-to-move/11041376
+            </li>
+            <li>
+              https://linguinecode.com/post/how-to-use-react-useref-with-typescript
+            </li>
+            <li>https://stackoverflow.com/a/55679953</li>
             <li>
               https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
             </li>
@@ -62,6 +73,7 @@ function CreditsPage() {
           </ul>
         </li>
       </ul>
+      Thank you for visiting!
     </Box>
   );
 }

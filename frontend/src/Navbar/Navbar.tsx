@@ -35,22 +35,27 @@ export function Navbar() {
           >
             <Typography variant="h6">YouTube Party</Typography>
           </Button>
+          <ButtonGroup variant="text" disableElevation={true}>
+            {username ? (
+              <Button color="inherit" component={RouterLink} to="/logout">
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button component={RouterLink} to="/login">
+                  Login
+                </Button>
 
-          {username ? (
-            <Button color="inherit" component={RouterLink} to="/logout">
-              Logout
+                <Button component={RouterLink} to="/signup">
+                  Sign Up
+                </Button>
+              </>
+            )}
+
+            <Button color="inherit" component={RouterLink} to="/credits">
+              Credits
             </Button>
-          ) : (
-            <ButtonGroup variant="text" disableElevation={true}>
-              <Button component={RouterLink} to="/login">
-                Login
-              </Button>
-
-              <Button component={RouterLink} to="/signup">
-                Sign Up
-              </Button>
-            </ButtonGroup>
-          )}
+          </ButtonGroup>
         </Toolbar>
       </AppBar>
     </div>

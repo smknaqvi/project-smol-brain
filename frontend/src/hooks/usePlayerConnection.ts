@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useParty } from '../PartyPage/PartyContextProvider';
 
@@ -8,12 +8,17 @@ export default function usePlayerConnection(
   const history = useHistory();
 
   const { socket } = useParty();
+
   const [submittedURL, setSubmittedURL] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [lastSeekTime, setLastSeekTime] = useState<[number]>([0]);
   const [notice, setNotice] = useState('');
 
+  const eventHandlerRef = useRef(eventHandler);
+
   useEffect(() => {
+    const eventHandler = eventHandlerRef.current;
+
     socket.onAny(eventHandler);
     socket.on('new-connection', (socketID: string) => {
       if (socket.id !== socketID) {
@@ -38,7 +43,7 @@ export default function usePlayerConnection(
     socket.on('url', (url: string) => {
       setSubmittedURL(url);
     });
-  }, [socket, history, eventHandler]);
+  }, [socket, history]);
 
   const handlePlay = useCallback(
     (timestamp: number): void => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Box, withStyles } from '@material-ui/core';
 import createPage from '../createPage';
 import PartyPlayer from '../VideoPlayer/PartyPlayer';
@@ -28,23 +28,22 @@ function PartyPage() {
     setSnackbarOpen(true);
   };
 
-  const handleSocketEvent = (event: string, ...args: any[]) => {
+  const handleSocketEvent = useCallback((event: string, ...args: any[]) => {
     switch (event) {
-      case 'new-connection':
-        setNumUsers(numUsers + 1);
-        break;
-      case 'new-disconnect':
-        setNumUsers(numUsers - 1);
-        break;
       case 'set-num-users':
         setNumUsers(args[0]);
         break;
     }
-  };
+  }, []);
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" marginBottom="10px">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        marginBottom="10px"
+      >
         <ClipboardToolTip title="Copy to clipboard" placement="right">
           <Button
             onClick={copyToClipboard}
@@ -57,6 +56,7 @@ function PartyPage() {
         {`Party Size: ${numUsers}`}
       </Box>
       <PartyPlayer handleEvent={handleSocketEvent} />
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

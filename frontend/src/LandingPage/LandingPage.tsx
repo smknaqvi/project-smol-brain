@@ -61,14 +61,12 @@ function LandingPage() {
           });
         })
         .catch(() => {
+          setIsLoading(false);
           setError(
             new Error(
               'Something went wrong on our end, could not create party.'
             )
           );
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
     },
     [history, setError]
@@ -88,10 +86,8 @@ function LandingPage() {
           });
         })
         .catch(() => {
-          setError(new Error('Invalid Party ID or Room Password'));
-        })
-        .finally(() => {
           setIsLoading(false);
+          setError(new Error('Invalid Party ID or Room Password'));
         });
     },
     [history, setError]
