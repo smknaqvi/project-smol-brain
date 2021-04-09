@@ -4,6 +4,8 @@ import useSocket from './useSocket';
 
 interface PartyContextType {
   socket: Socket;
+  isInvalidID: boolean;
+  isInvalidPassword: boolean;
   partyID: string;
   password: string;
 }
@@ -22,7 +24,7 @@ export default function PartyContextProvider({
   password,
 }: PartyContextProviderProps) {
   const contextValue = {
-    socket: useSocket(partyID, password),
+    ...useSocket(partyID, password),
     partyID,
     password,
   } as PartyContextType;

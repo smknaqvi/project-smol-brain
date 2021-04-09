@@ -1,14 +1,21 @@
-import { Button, CircularProgress, Box } from '@material-ui/core';
+import { Button, CircularProgress, withStyles } from '@material-ui/core';
+
+const FixedCircularProgress = withStyles(() => ({
+  root: {
+    position: 'absolute',
+    marginLeft: '50%',
+    marginRight: '50%',
+    opacity: '0.5',
+  },
+}))(CircularProgress);
 
 const LoadingButton = ({ loading, children, ...props }) => {
-  if (loading) {
-    return (
-      <Box alignSelf="center">
-        <CircularProgress size={25} />
-      </Box>
-    );
-  }
-  return <Button {...props}>{children}</Button>;
+  return (
+    <Button disabled={loading} {...props}>
+      {loading && <FixedCircularProgress size={25} />}
+      {children}
+    </Button>
+  );
 };
 
 export default LoadingButton;

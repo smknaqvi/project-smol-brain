@@ -10,7 +10,7 @@ interface DialogPropsInterface {
   isOpen: boolean;
 }
 
-function InvalidPartyDialog({ isOpen }: DialogPropsInterface) {
+function InvalidPartyPasswordDialog({ isOpen }: DialogPropsInterface) {
   const history = useHistory();
 
   return (
@@ -18,9 +18,8 @@ function InvalidPartyDialog({ isOpen }: DialogPropsInterface) {
       <DialogTitle id="form-dialog-title">Invalid Party ID</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          The party ID you're looking to join doesn't seem to exist. If you'd
-          like to create a new party or join an existing one, go to the home
-          page and try again.
+          The password you have given does not match the party's password. If
+          you think you made a mistake you can try joining the party again.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -39,4 +38,4 @@ function InvalidPartyDialog({ isOpen }: DialogPropsInterface) {
   );
 }
 
-export default InvalidPartyDialog;
+export default InvalidPartyPasswordDialog;

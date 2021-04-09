@@ -11,7 +11,7 @@ import PartyPage from './PartyPage/PartyPage';
 import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 import InvalidRoutePage from './InvalidRoute/InvalidRoutePage';
 import CreditsPage from './CreditsPage/CreditsPage';
-import WithPasswordPartyPage from './PartyPage/WithPasswordPartyPage';
+import PartyPageWrapper from './PartyPage/PartyPageWrapper';
 
 function App() {
   const { error, setError } = useAppState();
@@ -35,9 +35,9 @@ function App() {
           <CreditsPage />
         </Route>
         <PrivateRoute path="/party/:id">
-          <WithPasswordPartyPage>
+          <PartyPageWrapper>
             <PartyPage />
-          </WithPasswordPartyPage>
+          </PartyPageWrapper>
         </PrivateRoute>
         <PrivateRoute path="/" exact>
           <LandingPage />

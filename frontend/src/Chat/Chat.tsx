@@ -114,13 +114,7 @@ function Chat() {
             dense={true}
           >
             <ListItemText
-              primary={
-                message.sender +
-                ' (' +
-                message.timestamp +
-                ') ' +
-                message.message
-              }
+              primary={`(${message.timestamp}) ${message.sender}: ${message.message}`}
             />
           </ListItem>
         ))}

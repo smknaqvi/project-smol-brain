@@ -4,6 +4,7 @@ import RoomPasswordDialog from '../Dialogs/RoomPasswordDialog';
 import API from '../utils/API';
 import InvalidPartyDialog from '../Dialogs/InvalidPartyDialog';
 import PartyContextProvider from './PartyContextProvider';
+import { Box, CircularProgress } from '@material-ui/core';
 
 interface WithPasswordPartyPageProps {
   children: ReactElement;
@@ -15,7 +16,7 @@ interface LocationState {
   password?: string;
 }
 
-export default function AppStateProvider({
+export default function PartyPageWrapper({
   children,
 }: WithPasswordPartyPageProps) {
   const history = useHistory();
@@ -23,18 +24,14 @@ export default function AppStateProvider({
 
   const locationState = history.location.state as LocationState | undefined;
   const [isValidated, setIsValidated] = useState(!!locationState?.isValidated);
-  const [hasPassword, setHasPassword] = useState(!!locationState?.hasPassword);
   const [password, setPassword] = useState(locationState?.password || '');
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
   const [isInvalidID, setIsInvalidID] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!isValidated && !isLoading) {
-      setIsLoading(true);
+    if (!isValidated) {
       API.get(`/party/${partyID}`)
         .then((res) => {
-          setHasPassword(res.data.hasPassword);
           setIsPasswordDialogOpen(res.data.hasPassword && !password);
         })
         .catch(() => {
@@ -42,22 +39,34 @@ export default function AppStateProvider({
         })
         .finally(() => {
           setIsValidated(true);
-          setIsLoading(false);
         });
     } else if (!isPasswordDialogOpen) {
-      setIsPasswordDialogOpen(hasPassword && !password);
+      setIsPasswordDialogOpen(!!locationState?.hasPassword && !password);
     }
   }, [
-    hasPassword,
     isPasswordDialogOpen,
     isValidated,
+    locationState?.hasPassword,
     partyID,
     password,
-    isLoading,
   ]);
 
   if (!isValidated) {
-    return <p>Loading</p>;
+    return (
+      <Box
+        display="flex"
+        height="100%"
+        width="100%"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (isInvalidID) {
+    return <InvalidPartyDialog isOpen={isInvalidID} />;
   }
 
   return isPasswordDialogOpen ? (
@@ -71,7 +80,7 @@ export default function AppStateProvider({
     />
   ) : (
     <PartyContextProvider partyID={partyID} password={password}>
-      {isInvalidID ? <InvalidPartyDialog isOpen={isInvalidID} /> : children}
+      {children}
     </PartyContextProvider>
   );
 }

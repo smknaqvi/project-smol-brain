@@ -1,34 +1,60 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BACKEND_API_URI } from '../constants';
 import { io, Socket } from 'socket.io-client';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
-export default function useSocket(partyID: string, password: string): Socket {
+export default function useSocket(
+  partyID: string,
+  password: string
+): {
+  socket: Socket;
+  isInvalidID: boolean;
+  isInvalidPassword: boolean;
+} {
   const history = useHistory();
 
-  const socket = useMemo(
-    (): Socket =>
-      io(BACKEND_API_URI, {
-        query: {
-          partyID,
-        },
-        auth: {
-          password,
-        },
-        withCredentials: true,
-      }),
-    [partyID, password]
+  const socketRef = useRef(
+    io(BACKEND_API_URI, {
+      query: {
+        partyID,
+      },
+      auth: {
+        password,
+      },
+      withCredentials: true,
+    })
   );
 
+  const [isInvalidID, setIsInvalidID] = useState(false);
+  const [isInvalidPassword, setIsInvalidPassword] = useState(false);
+
   useEffect(() => {
-    socket.on('connect_error', () => {
-      history.replace('/');
-    });
+    const socket = socketRef.current;
+    socket.on(
+      'connect_error',
+      (err: { data: { type: string } } | undefined) => {
+        const type = err?.data?.type;
+        if (type) {
+          switch (type) {
+            case 'invalid-id':
+              setIsInvalidID(true);
+              break;
+            case 'invalid-password':
+              setIsInvalidPassword(true);
+              break;
+            default:
+              history.replace('/');
+          }
+        } else {
+          history.replace('/');
+        }
+      }
+    );
 
     return () => {
       socket.disconnect();
     };
-  }, [socket, history]);
+  }, [history]);
 
-  return socket;
+  return { socket: socketRef.current, isInvalidID, isInvalidPassword };
 }

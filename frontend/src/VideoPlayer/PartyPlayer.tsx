@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import YoutubeIFrame from './YoutubeIFrame';
-import { Snackbar } from '@material-ui/core';
+import { Box, Snackbar } from '@material-ui/core';
 import Alert from '../Alert/Alert';
 import InputLabel from '@material-ui/core/InputLabel';
 import FilledInput from '@material-ui/core/FilledInput';
@@ -9,9 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Send from '@material-ui/icons/Send';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
 import usePlayerConnection from '../hooks/usePlayerConnection';
-import { Box } from '@material-ui/core';
 import Chat from '../Chat/Chat';
 
 const useStyles = makeStyles(() => ({
@@ -59,10 +57,9 @@ function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
   } = usePlayerConnection(handleEvent);
 
   return (
-    <Grid
-      container
-      spacing={5}
-      direction="column"
+    <Box
+      display="flex"
+      flexDirection="column"
       alignItems="center"
       alignContent="center"
     >
@@ -104,7 +101,6 @@ function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
           <Chat />
         </div>
       </Box>
-
       <Snackbar
         open={!!notice}
         autoHideDuration={6000}
@@ -114,7 +110,7 @@ function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
           {notice}
         </Alert>
       </Snackbar>
-    </Grid>
+    </Box>
   );
 }
 

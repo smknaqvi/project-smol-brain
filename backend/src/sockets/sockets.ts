@@ -6,6 +6,7 @@ import redisClient, { get, exists, set, del } from '../lib/redis';
 import { once } from 'lodash';
 import { verifyPassword } from '../lib/crypto';
 import { INTERNAL_ERROR_MESSAGE } from '../constants';
+import ErrorWithData from '../lib/ErrorWithData';
 
 export const createSocketServerOnce = once((server, corsOptions, session) => {
   const io = new Server(server, { cors: corsOptions });
@@ -32,7 +33,8 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
       .then((roomExists) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (!roomExists || !(socket.handshake as any).session.username) {
-          const err = new Error('invalid partyID');
+          const err = new ErrorWithData('Invalid Party ID');
+          err.data = { type: 'invalid-id' };
           return next(err);
         }
       })
@@ -48,7 +50,8 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
               if (isValidPassword) {
                 return next();
               } else {
-                const err = new Error('invalid room password');
+                const err = new ErrorWithData('Invalid Room Password');
+                err.data = { type: 'invalid-password' };
                 return next(err);
               }
             }
@@ -63,7 +66,6 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
   });
 
   io.on('connection', (socket: Socket) => {
-    console.log(`Client ${socket.id} connected`);
     const partyID = socket.handshake.query.partyID as string;
 
     get(partyID, 'current_url')
@@ -125,24 +127,10 @@ const ioFunction = (io: Server, session: RequestHandler): void => {
         setTimeout(() => {
           numParticipants = io.sockets.adapter.rooms.get(partyID)?.size;
           if (!numParticipants) {
-            del(partyID)
-              .then(() => {
-                console.log(
-                  `Deleted empty room after ${delay / 1000} second(s)`
-                );
-              })
-              .catch((err) => {
-                console.error(
-                  'Failed to delete room, something went wrong:',
-                  err
-                );
-              });
-          } else {
-            console.log('Did not delete room, room not empty!');
+            del(partyID);
           }
         }, delay);
       }
-      console.log(`Client ${socket.id} disconnected`);
     });
   });
 };

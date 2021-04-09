@@ -13,10 +13,11 @@ import logo from '../media/logo-full.png';
 import { ButtonGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+// https://developer.mozilla.org/en-US/docs/Web/CSS/calc()
 const useStyles = makeStyles(() => ({
   button: {
-    height: '8vh',
-    fontSize: '2vh',
+    height: 'calc(40px + 4.5vh)',
+    fontSize: 'calc(12px + 1vh)',
     margin: '8px',
   },
 }));

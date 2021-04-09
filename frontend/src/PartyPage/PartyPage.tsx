@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Box, withStyles } from '@material-ui/core';
+import { Box, ButtonGroup, withStyles } from '@material-ui/core';
 import createPage from '../createPage';
 import PartyPlayer from '../VideoPlayer/PartyPlayer';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -8,6 +8,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { Snackbar } from '@material-ui/core';
 import Alert from '../Alert/Alert';
 import { useParty } from './PartyContextProvider';
+import InvalidPartyDialog from '../Dialogs/InvalidPartyDialog';
+import InvalidPartyPasswordDialog from '../Dialogs/InvalidPartyPasswordDialog';
 
 const ClipboardToolTip = withStyles(() => ({
   tooltip: {
@@ -20,11 +22,11 @@ function PartyPage() {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const { partyID } = useParty();
+  const { partyID, isInvalidPassword, isInvalidID, password } = useParty();
 
-  const copyToClipboard = () => {
+  const copyToClipboard = (text: string) => {
     //https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
-    navigator.clipboard.writeText(partyID);
+    navigator.clipboard.writeText(text);
     setSnackbarOpen(true);
   };
 
@@ -38,28 +40,44 @@ function PartyPage() {
 
   return (
     <Box>
+      <InvalidPartyDialog isOpen={isInvalidID} />
+      <InvalidPartyPasswordDialog isOpen={isInvalidPassword} />
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         marginBottom="10px"
+        flexWrap="wrap"
       >
-        <ClipboardToolTip title="Copy to clipboard" placement="right">
-          <Button
-            onClick={copyToClipboard}
-            variant="outlined"
-            endIcon={<FileCopyIcon />}
-          >
-            {partyID}
-          </Button>
-        </ClipboardToolTip>
+        <ButtonGroup>
+          <ClipboardToolTip title="Copy to clipboard" placement="bottom">
+            <Button
+              onClick={() => copyToClipboard(partyID)}
+              variant="outlined"
+              endIcon={<FileCopyIcon />}
+            >
+              {partyID}
+            </Button>
+          </ClipboardToolTip>
+          {password && (
+            <ClipboardToolTip title="Copy to clipboard" placement="bottom">
+              <Button
+                onClick={() => copyToClipboard(password)}
+                variant="outlined"
+                endIcon={<FileCopyIcon />}
+              >
+                ••••
+              </Button>
+            </ClipboardToolTip>
+          )}
+        </ButtonGroup>
+
         {`Party Size: ${numUsers}`}
       </Box>
       <PartyPlayer handleEvent={handleSocketEvent} />
-
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert onClose={() => setSnackbarOpen(false)} severity="success">

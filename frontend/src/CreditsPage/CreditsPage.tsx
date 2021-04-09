@@ -51,6 +51,7 @@ function CreditsPage() {
               https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events/
             </li>
             <li>https://reactjs.org/docs/uncontrolled-components.html</li>
+            <li>https://developer.mozilla.org/en-US/docs/Web/CSS/calc()</li>
           </ul>
         </li>
       </ul>

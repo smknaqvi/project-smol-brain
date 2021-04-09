@@ -19,7 +19,7 @@
       }
     ],
     "prefer-const": 2,
-    "no-console": 2
+    "no-console": 1
   },
   "ignorePatterns": ["node_modules", "dist"]
 }

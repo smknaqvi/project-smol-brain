@@ -41,15 +41,15 @@ export function Navbar() {
                 Logout
               </Button>
             ) : (
-              <>
-                <Button component={RouterLink} to="/login">
+              [
+                <Button key="login-btn" component={RouterLink} to="/login">
                   Login
-                </Button>
+                </Button>,
 
-                <Button component={RouterLink} to="/signup">
+                <Button key="signup-btn" component={RouterLink} to="/signup">
                   Sign Up
-                </Button>
-              </>
+                </Button>,
+              ]
             )}
 
             <Button color="inherit" component={RouterLink} to="/credits">

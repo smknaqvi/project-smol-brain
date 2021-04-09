@@ -27,10 +27,6 @@ export default function usePlayerConnection(
       setIsPlaying(false);
     });
 
-    socket.on('connect_error', () => {
-      history.replace('/');
-    });
-
     socket.on('play', (timestamp: number) => {
       setLastSeekTime([timestamp]);
       setIsPlaying(true);

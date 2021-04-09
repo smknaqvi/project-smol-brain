@@ -8,7 +8,7 @@ export const rateLimiterMiddleware = (
   const rateLimiter = new RateLimiterRedis({
     storeClient: redisClient,
     keyPrefix: 'ratelimitmiddleware',
-    points: 2, // 2 points regenerated every 1 second
+    points: 4, // 4 points regenerated every 1 second
     duration: 1,
   });
 
