@@ -10,6 +10,7 @@ import Alert from '../Alert/Alert';
 import { useParty } from './PartyContextProvider';
 import InvalidPartyDialog from '../Dialogs/InvalidPartyDialog';
 import InvalidPartyPasswordDialog from '../Dialogs/InvalidPartyPasswordDialog';
+import { makeStyles } from '@material-ui/core/styles';
 
 const ClipboardToolTip = withStyles(() => ({
   tooltip: {
@@ -17,12 +18,24 @@ const ClipboardToolTip = withStyles(() => ({
   },
 }))(Tooltip);
 
+const useStyles = makeStyles(() => ({
+  partyPageBox: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '10px',
+    flexWrap: 'wrap',
+  },
+}));
+
 function PartyPage() {
   const [numUsers, setNumUsers] = useState(0);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { partyID, isInvalidPassword, isInvalidID, password } = useParty();
+
+  const classes = useStyles();
 
   const copyToClipboard = (text: string) => {
     //https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
@@ -42,13 +55,7 @@ function PartyPage() {
     <Box>
       <InvalidPartyDialog isOpen={isInvalidID} />
       <InvalidPartyPasswordDialog isOpen={isInvalidPassword} />
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        marginBottom="10px"
-        flexWrap="wrap"
-      >
+      <Box className={classes.partyPageBox}>
         <ButtonGroup>
           <ClipboardToolTip title="Copy to clipboard" placement="bottom">
             <Button

@@ -51,10 +51,6 @@ export function Navbar() {
                 </Button>,
               ]
             )}
-
-            <Button color="inherit" component={RouterLink} to="/credits">
-              Credits
-            </Button>
           </ButtonGroup>
         </Toolbar>
       </AppBar>

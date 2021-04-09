@@ -49,3 +49,7 @@ The frontend should be listening on port 3000 and the backend on 5000. Just stic
 ## API Documentation
 
 Please see `DOCS.md`
+
+## Credits
+
+You can visit https://ytparty.ml/credits to view all the code snippets, tutorials, and documentation we referenced.

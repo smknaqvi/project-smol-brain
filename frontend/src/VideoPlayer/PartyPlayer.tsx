@@ -28,11 +28,17 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
   },
   chat: {
-    padding: '5px',
+    padding: '2px',
     margin: '10px',
     width: '40vh',
     border: '1px solid white',
-    borderRadius: '20px',
+    borderRadius: '5px',
+  },
+  playerBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    alignContent: 'center',
   },
 }));
 
@@ -57,12 +63,7 @@ function PartyPlayer({ handleEvent }: RTCPlayerWrapperProps) {
   } = usePlayerConnection(handleEvent);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      alignContent="center"
-    >
+    <Box className={classes.playerBox}>
       <FormControl className={classes.form} fullWidth>
         <InputLabel
           className={classes.helperText}
