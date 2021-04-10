@@ -1,6 +1,6 @@
 ## API Documentation
 
-Our documentation is live at [http://api.ytparty.ml/](http://api.ytparty.ml/)
+Our documentation is live at [https://api.ytparty.ml/](https://api.ytparty.ml/)
 
 Also feel free to build the documentation for yourself within `./backend`
 
