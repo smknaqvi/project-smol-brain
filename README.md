@@ -6,6 +6,8 @@ Visit our website at [https://ytparty.ml](https://ytparty.ml) to see this projec
 
 Watch our demo at https://www.youtube.com/watch?v=Y8Tq7FqnPMc
 
+Check our uptime at https://status.ytparty.ml/
+
 ## Development
 
 1. Copy the contents from `.env.development.example` to .env for both the `frontend/` and `backend/` folders
