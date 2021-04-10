@@ -37,6 +37,8 @@ export default function usePlayerConnection(
     });
 
     socket.on('url', (url: string) => {
+      setLastSeekTime([0]);
+      setIsPlaying(false);
       setSubmittedURL(url);
     });
   }, [socket, history]);

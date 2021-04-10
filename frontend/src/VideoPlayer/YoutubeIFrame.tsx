@@ -49,17 +49,13 @@ function YoutubeIFrame({
     debounce(() => {
       playerRef.current?.getCurrentTime() &&
         handlePause(playerRef.current?.getCurrentTime());
-    }, 1000),
+    }, 3000),
     [handlePause]
   );
 
   const onReady = useCallback(() => {
     setIsReady(true);
   }, []);
-
-  const onStart = useCallback(() => {
-    playerRef.current?.seekTo(...lastSeekTime, 'seconds');
-  }, [lastSeekTime]);
 
   const onPlay = useCallback(() => {
     if (!isPlaying) {
@@ -90,7 +86,6 @@ function YoutubeIFrame({
         playbackRate={playbackRate}
         progressInterval={PROGRESS_INTERVAL}
         onReady={onReady}
-        onStart={onStart}
         onPlay={onPlay}
         onPause={onPause}
         onBuffer={bufferPause}

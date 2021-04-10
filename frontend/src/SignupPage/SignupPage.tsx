@@ -113,6 +113,7 @@ function SignupPage() {
               id="username"
               label="Username"
               variant="outlined"
+              disabled={isLoading}
               fullWidth={true}
             />
             <TextField
