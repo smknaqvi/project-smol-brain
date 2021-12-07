@@ -2,11 +2,11 @@
 
 Watch youtube in sync with your friends!
 
-Visit our website at [https://ytparty.ml](https://ytparty.ml) to see this project in action.
+~~Visit our website at [REDACTED] to see this project in action.~~ (This site is no longer active and domain is no longer in our ownership)
 
 Watch our demo at https://www.youtube.com/watch?v=Y8Tq7FqnPMc
 
-Check our uptime at https://status.ytparty.ml/
+Check our uptime at [REDTACTED] (This site is no longer active and domain is no longer in our ownership)
 
 ## Development
 
@@ -34,13 +34,13 @@ Note: this can be used for development as well if you skip the steps labelled (P
 
 1. (Prod) Change the `FRONTEND_ORIGIN` and `ROOT_DOMAIN` to match your domain that your frontend is hosted on in `./backend/.env`.
 
-   > Ex: an app hosted at https://ytparty.ml would have `FRONTEND_ORIGIN=https://ytparty.ml` and `ROOT_DOMAIN=ytparty.ml`
+   > Ex: an app hosted at [REDACTED] would have `FRONTEND_ORIGIN=[REDACTED]` and `ROOT_DOMAIN=[REDACTED]` (This site is no longer active and domain is no longer in our ownership)
 
 1. (Prod) Change `NODE_ENV` to `production` in `./backend/.env`.
 
 1. (Prod) Change `REACT_APP_BACKEND_URI` to point to your backend api
 
-   > Ex: an api you want hosted at https://api.ytparty.ml would have `REACT_APP_BACKEND_URI=https://api.ytparty.ml`
+   > Ex: an api you want hosted at [REDACTED] would have `REACT_APP_BACKEND_URI=[REDACTED]` (This site is no longer active and domain is no longer in our ownership)
 
 1. Run docker-compose
 
@@ -56,4 +56,4 @@ Please see `DOCS.md`
 
 ## Credits
 
-You can visit https://ytparty.ml/credits to view all the code snippets, tutorials, and documentation we referenced.
+You can visit [REDACTED] to view all the code snippets, tutorials, and documentation we referenced. (This site is no longer active and domain is no longer in our ownership)
